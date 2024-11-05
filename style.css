@@ -1,0 +1,490 @@
+*, ::before, ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+html {
+    /* makes it easier to do math on px to rem */
+    font-size: 62.5%;
+}
+
+nav {
+    min-height: 3vh;
+    max-height: 8vh;
+    background-color: rgba(255, 255, 255, 1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.3vh;
+    box-shadow: 0 1px 10px 2px rgba(0, 0, 0, .03);
+    font-size: 1.6rem;
+}
+
+.nav-items {
+    display: flex;
+    gap: 4.4rem;
+}
+
+a {
+    text-decoration: none;
+    color: rgba(30, 128, 34, .6);
+}
+
+a.home {
+    color: rgba(30, 128, 34, 1);
+}
+
+body {
+    background-color: rgba(244, 255, 245, 1);
+}
+
+/* ~~~~~ INTRODUCTION ~~~~~ */
+
+.introduction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 6.9rem;
+    gap: 1.2rem;
+}
+
+.first-row {
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    width: 90%;
+    max-width: 150.0rem;
+}
+
+.green-picture-container {
+    display: flex;
+    flex-grow: 1;
+    gap: 1.2rem;
+    width: 100%;
+    height: 100%;
+}
+
+.green-picture {
+    width: 100%;
+    height: 100%;
+}
+
+.cargo-title {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.cargo-title h1 {
+    font-size: 6.0rem;
+    color: rgba(30, 128, 34, 1);
+}
+
+.second-row {
+    justify-content: space-around;
+    display: flex;
+    width: 90%;
+    max-width: 150.0rem;
+}
+
+.second-row-column {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.second-row-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+.second-row-header {
+    font-size: 4.8rem;
+    color: rgba(9, 44, 10, .8);
+}
+
+.second-row-paragraph {
+    font-size: 1.6rem;
+    color: rgba(9, 44, 10, .4);
+}
+
+.second-row-button {
+    display: flex;
+    gap: 1.2rem;
+}
+
+.explore {
+    width: 32%;
+    padding: 1.2rem 1.6rem;
+    font-size: 1.6rem;
+    border: none;
+    border-radius: 8px;
+    color: rgba(244, 255, 245, 1);
+    background-color: rgba(30, 128, 34, 1);
+}
+
+.book-now {
+    width: 32%;
+    padding: 1.2rem 1.6rem;
+    font-size: 1.6rem;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: rgba(30, 128, 34, 1);
+    border: 1px solid rgba(30, 128, 34, 1);
+}
+
+.second-row-pictures {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    gap: 1.2rem;
+    width: 100%;
+    height: 100%;
+}
+
+.first-picture {
+    width: 48%;
+    max-height: 54vh;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.second-picture {
+    width: 48%;
+    max-height: 54vh;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* ~~~~~ OUR CAR BRANDS ~~~~~ */
+
+.our-car-brands {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 5.85rem 0;
+}
+
+.our-car-brands-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4.19rem;
+    height: 28rem;
+    padding: 1.4rem 4.8rem;
+    background-color: rgba(245, 245, 245, 1);
+}
+
+.car-brand-heading-container {
+    display: flex;
+    justify-content: center;
+}
+
+.our-car-brands-heading {
+    display: flex;
+    width: 90%;
+    max-width: 150.0rem;
+    font-size: 4.8rem;
+    color: rgba(9, 44, 10, 1);
+}
+
+.car-brand-logo-container {
+    display: flex;
+    justify-content: center;
+}
+
+.car-brand-logo {
+    display: flex;
+    width: 90%;
+    max-width: 150.0rem;
+    justify-content: space-between;
+}
+
+img.logo {
+    height: 7.0rem;
+    width: 7.0rem;
+    object-fit: fill;
+}
+
+img.logo.resize-logo {
+    height: 6.0rem;
+    width: 6.0rem;
+    object-fit: fill;
+}
+
+
+/* ~~~~~ FEATURED ~~~~~ */
+
+.featured-cars {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 5.85rem 0;
+}
+
+.featured-cars-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3.2rem;
+    padding: 1.4rem 4.8rem;
+}
+
+.feature-heading-container {
+    display: flex;
+    justify-content: center;
+}
+
+.featured-heading {
+    display: flex;
+    width: 90%;
+    max-width: 150.0rem;
+    font-size: 4.8rem;
+    color: rgba(9, 44, 10, 1);
+}
+
+.carousel-container {
+    display: flex;
+    justify-content: center;
+}
+
+.carousel {
+    display: flex;
+    gap: 1.2rem;
+    width: 90%;
+    max-width: 150.0rem;
+}
+
+.car-name {
+    font-size: 2.0rem;
+    color: rgba(30, 128, 34, 1);
+}
+
+.car-description {
+    font-size: 1.6rem;
+    color: rgba(30, 128, 34, .6);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    justify-content: space-between;
+}
+
+.car-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.reserve-btn-container {
+    display: flex;
+    justify-content: right;
+}
+
+.reserve-now-btn {
+    width: 40%;
+    padding: 1.2rem 1.2rem;
+    font-size: 1.6rem;
+    border: none;
+    border-radius: 8px;
+    color: rgba(244, 255, 245, 1);
+    background-color: rgba(30, 128, 34, 1);
+}
+
+/* ~~~~~ ABOUT US ~~~~~ */
+
+.about-us {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-us-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3.2rem;
+    padding: 6.2rem;
+    background-color: rgba(245, 245, 245, 1);
+}
+
+.about-us-heading-container {
+    display: flex;
+    justify-content: center;
+}
+
+.about-us-heading {
+    display: flex;
+    width: 90%;
+    max-width: 150.0rem;
+    font-size: 4.8rem;
+    color: rgba(9, 44, 10, 1);
+}
+
+.about-us-row-container {
+    display: flex;
+    justify-content: center;
+}
+
+.about-us-row {
+    display: flex;
+    width: 90%;
+    max-width: 150.0rem;
+    justify-content: space-between;
+    gap: 1.2rem;
+}
+
+.about-us-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1.6rem;
+}
+
+.about-us-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.contact-title {
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: rgba(30, 128, 34, 1);
+}
+
+.contact-description {
+    font-size: 1.6rem;
+    color: rgba(30, 128, 34, .6);
+}
+
+/* ~~~~~ footer ~~~~~ */
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4.7rem;
+    padding: 6.0rem;
+    background-color: rgba(9, 44, 10, 1);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4.7rem;
+}
+
+.footer-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 150.0rem;
+}
+
+.footer-logo {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.footer-logo p {
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: rgba(244, 255, 245, 1);
+}
+
+.footer-columns {
+    display: flex;
+    justify-content: end;
+    gap: 11rem;
+    flex-grow: 1;
+}
+
+.adjust {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.footer-title {
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: rgba(244, 255, 245, 1);
+}
+
+.footer-data {
+    font-size: 1.6rem;
+    color: rgba(244, 255, 245, .6);
+}
+
+.appendix-content {
+    display: flex;
+}
+
+.appendix-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 150.0rem;
+}
+
+.footer-appendix-links {
+    display: flex;
+    justify-content: end;
+    width: 90%;
+    gap: 2.1rem;
+    max-width: 150.0rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2.1rem;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: rgba(244, 255, 245, .8);
+}
+
+.footer-appendix-socials {
+    display: flex;
+    justify-content: end;
+    padding-right: 10rem;
+    width: 90%;
+    gap: 2.1rem;
+    max-width: 150.0rem;
+}
+
+.footer-socials {
+    display: flex;
+    gap: .8rem;
+}
+
+.social-logo {
+    height: 2.5rem;
+    width: 2.5rem;
+    object-fit: fill;
+}
+
+.social-logo-adjust {
+    display: flex;
+    height: 2rem;
+    width: 2.4rem;
+    object-fit: fill;
+}
