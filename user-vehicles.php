@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+require 'connection.php';
+// unset( $_SESSION['email'] );
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +48,16 @@
                         <a class="nav-link text-success-emphasis" href="user-vehicles.php">VEHICLES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-success" href="user-sign-in.php">SIGN IN</a>
+                        <a class="nav-link text-success" href="<?php if (!isset($_SESSION["email"])) {
+                                                                    echo "user-sign-in.php";
+                                                                } else {
+                                                                    echo "user-chats.php";
+                                                                } ?>"><?php if (!isset($_SESSION["email"])) {
+                                                                            echo "SIGN IN";
+                                                                        } else {
+                                                                            echo "PROFILE";
+                                                                        }
+                                                                        ?></a>
                     </li>
                 </ul>
             </div>
@@ -113,13 +129,13 @@
                                         <caption>₱46,000</caption>
                                     </div>
                                     <button class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">Reserve Now</button>
+                                        data-bs-target="<?php if(!isset($_SESSION['email'])) {echo "#signInModal";} else if(isset($_SESSION['email'])){echo "#reserveCar";}  ?>">Reserve Now</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- modal -->
-                    <div class="modal fade" tabindex="-1" id="exampleModal">
+                    <!-- modal for reserving a car SESSION EMAIL TRUE -->
+                    <div class="modal fade" tabindex="-1" id="reserveCar">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -139,10 +155,11 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h4 class="mt-2">Rent Date</h4>
                                         <h6 class="mt-2 text-end">
-                                            <small>₱ 6,500</small><caption>/day</caption>
+                                            <small>₱ 6,500</small>
+                                            <caption>/day</caption>
                                         </h6>
                                     </div>
-                                    
+
 
                                     <div class="mb-3">
                                         <form action="" class="row">
@@ -175,6 +192,24 @@
 
 
                 </div>
+
+                <!-- modal for SESSION EMAIL FALSE -->
+                <div class="modal fade" id="signInModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            You need to sign in to reserve a car. Click the button below to sign in.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <a href="user-sign-in.php"><button type="button" class="btn btn-success">Sign In</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -182,8 +217,6 @@
 
     <script>
         const myInput = document.getElementById('myInput')
-
-
     </script>
 </body>
 

@@ -1,3 +1,14 @@
+<?php
+session_start();
+if (isset($_SESSION['error'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['error']); // Clear the error message after displaying it
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,101 +59,86 @@
         </div>
     </nav>
 
-    <main class='my-4'>
+    <main class='mt-2 mb-5
+    '>
         <div class="container d-flex justify-content-center">
             <div>
-                <h1 class="mb-5 text-center">Sign Up</h1>
+                <h1 class="mb-2 text-center">Sign Up</h1>
                 <div class="px-5 py-5 bg-white shadow">
                     <div class="container" style="max-width: 729px;">
-                        <form class="d-flex flex-column justify-content-center">
-                            <div class="row">
-
-                                
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="firstname" class="form-label">First name</label>
-                                        <input type="text" class="form-control" id="firstname"
-                                            >
-                                    </div>
+                        <form action="user-sign-up-logic.php" method="POST" enctype="multipart/form-data">
+                            <!-- First Name -->
+                            <div class="mb-3 d-flex col">
+                                <div class="w-100">
+                                    <label for="firstname" class="form-label">First name</label>
+                                    <input type="text" class="form-control" id="firstname" name="firstname">
                                 </div>
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="lastname" class="form-label">Last name</label>
-                                        <input type="text" class="form-control" id="lastname"
-                                            >
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="username" class="form-label">Contact Number</label>
-                                        <input type="text" class="form-control" id="username"
-                                            >
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <div class="row ">
+                            <!-- Last Name -->
+                            <div class="mb-3 d-flex col">
+                                <div class="w-100">
+                                    <label for="lastname" class="form-label">Last name</label>
+                                    <input type="text" class="form-control" id="lastname" name="lastname">
+                                </div>
+                            </div>
 
-                                <div class="mb-3 d-flex col ">
+                            <!-- Contact Number -->
+                            <div class="mb-3 d-flex col">
+                                <div class="w-100">
+                                    <label for="contact" class="form-label">Contact Number</label>
+                                    <input type="number" class="form-control" id="contact" name="contact">
+                                </div>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="row">
+                                <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address"
-                                            >
+                                        <input type="text" class="form-control" id="address" name="address">
                                     </div>
                                 </div>
-
-                                
-
-
                             </div>
 
-                            <div class="row ">
-
-                                <div class="mb-3 d-flex col ">
+                            <!-- Email and Valid ID -->
+                            <div class="row">
+                                <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="email" class="form-label">Email Address</label>
-                                        <input type="text" class="form-control" id="email"
-                                            >
+                                        <input type="email" class="form-control" id="email" name="email">
                                     </div>
                                 </div>
 
-                                <div class="mb-3 d-flex col ">
+                                <div class="mb-3 d-flex col">
                                     <div class="w-100">
-                                        <label for="email" class="form-label">Valid ID</label>
-                                        <input type="file" class="form-control" id="email"
-                                            >
+                                        <label for="id" class="form-label">Valid ID</label>
+                                        <input type="file" class="form-control" id="id" name="id">
                                     </div>
                                 </div>
-
                             </div>
 
-                            <div class="row ">
-
-                                <div class="mb-3 d-flex col ">
+                            <!-- Password and Confirm Password -->
+                            <div class="row">
+                                <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="text" class="form-control" id="password"
-                                            >
+                                        <input type="password" class="form-control" id="password" name="password">
                                     </div>
                                 </div>
 
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="confirmpassword" class="form-label">Confirm Password</label>
-                                        <input type="text" class="form-control" id="confirmpassword"
-                                            >
+                                        <input type="password" class="form-control" id="confirmpassword" name="confirmPassword">
                                     </div>
                                 </div>
-
-
                             </div>
 
-                            <input type="submit" class="btn btn-success" value="Sign In">
+                            <input type="submit" class="btn btn-success" value="Sign Up" name="user-signup-button">
                         </form>
+
+
                         <hr>
                         <div class="text-center">
                             <p>Already have an account? <a href="user-sign-in.php" class="text-success">Sign In</a></p>

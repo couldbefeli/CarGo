@@ -1,3 +1,15 @@
+<?php
+session_start();
+require "connection.php";
+
+if (isset($_SESSION['error'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['error']); // Clear the error message after displaying it
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,16 +68,18 @@
                 <h1 class="mb-5 text-center">Sign In</h1>
                 <div class="px-5 py-5 bg-white shadow">
                     <div class="container" style="max-width: 500px;">
-                        <form>
+
+                    <!-- form -->
+                        <form method="POST" action="user-sign-in-logic.php">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
-                                <input type="text" class="form-control" id="email" >
+                                <input type="text" class="form-control" id="email" name="email">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password">
+                                <input type="password" class="form-control" id="password" name="password">
                             </div>
-                            <input type="submit" class="btn btn-success w-100" value="Sign In">
+                            <input type="submit" class="btn btn-success w-100" value="Sign In" name="userSigninButton">
                         </form>
                         <hr>
                         <div class="text-center">

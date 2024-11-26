@@ -1,5 +1,7 @@
 <?php 
-
+    require "connection.php";
+    session_start();
+    // unset($_SESSION["email"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,8 +38,10 @@
                     <li class="nav-item">
                         <a class="nav-link text-success" href="user-vehicles.php">VEHICLES</a>
                     </li>
+                    
                     <li class="nav-item">
-                        <a class="nav-link text-success" href="user-sign-in.php">SIGN IN</a>
+                        <a class="nav-link text-success" href="<?php if (!isset($_SESSION["email"])){echo "user-sign-in.php";} else { echo "user-chats.php";} ?>"><?php if (!isset($_SESSION["email"])){echo "SIGN IN";} else { echo "PROFILE";} 
+                            ?></a>
                     </li>
                 </ul>
             </div>

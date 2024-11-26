@@ -1,3 +1,14 @@
+<?php
+
+session_start();
+require 'connection.php';
+if (!isset($_SESSION['email'])) {
+    header('Location: user-sign-in.php');
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,8 +37,8 @@
                         <a class="nav-link text-success" href="user-vehicles.php">VEHICLES</a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
-                        <img src="img/avatar.png" alt="User Avatar" width="24" height="24" class="me-2">
-                        <a class="nav-link text-success-emphasis" href="#">HIRAYA</a>
+                    <a class="nav-link text-success" href="<?php if (!isset($_SESSION["email"])){echo "user-sign-in.php";} else { echo "user-chats.php";} ?>"><?php if (!isset($_SESSION["email"])){echo "SIGN IN";} else { echo "PROFILE";} 
+                            ?></a>
                     </li>
                 </ul>
             </div>

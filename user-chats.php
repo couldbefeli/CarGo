@@ -1,10 +1,27 @@
+<?php
+
+session_start();
+require 'connection.php';
+if (!isset($_SESSION['email'])) {
+    header('Location: user-sign-in.php');
+}
+
+$sqlQuery = "SELECT * FROM `messages` WHERE messages.sender_id = {$_SESSION['user_id']} OR messages.receiver_id = {$_SESSION['user_id']} ORDER BY messages.sent_at DESC";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$chats = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+// print_r($chats)
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messenger Style Chat</title>
+    <title>Chat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -26,8 +43,16 @@
                         <a class="nav-link text-success" href="user-vehicles.php">VEHICLES</a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
-                        <img src="img/avatar.png" alt="User Avatar" width="24" height="24" class="me-2">
-                        <a class="nav-link text-success-emphasis" href="#">HIRAYA</a>
+                        <a class="nav-link text-success" href="<?php if (!isset($_SESSION["email"])) {
+                                                                    echo "user-sign-in.php";
+                                                                } else {
+                                                                    echo "user-chats.php";
+                                                                } ?>"><?php if (!isset($_SESSION["email"])) {
+                                                                            echo "SIGN IN";
+                                                                        } else {
+                                                                            echo "PROFILE";
+                                                                        }
+                                                                        ?></a>
                     </li>
                 </ul>
             </div>
@@ -36,7 +61,7 @@
 
     <main class="container">
         <div class="row">
-            
+
             <aside class="col-12 col-md-3 col-lg-2 bg-light p-3 d-flex flex-column mt-5 rounded" style="height: max-content;">
                 <ul class="nav flex-column">
                     <li class="nav-item mb-3 bg-success rounded">
@@ -57,23 +82,31 @@
                 <div class="container d-flex flex-column bg-light p-0" style="max-width: 100%; height: 75vh; border: 1px solid #ddd; border-radius: 8px;">
 
                     <div id="chat-content" class="flex-grow-1 p-3 overflow-auto d-flex flex-column-reverse">
-                        <!-- Chat Sent -->
-                        <div class="d-flex justify-content-end mb-3">
-                            <div class="p-3 bg-success text-white rounded-3" style="max-width: 75%;">
-                                <p class="mb-0">I'm good, thank you! How about you?</p>
-                                <small class="text-white-50">12:01 PM</small>
-                            </div>
-                        </div>
+
+                        <?php foreach ($chats as $chat) {
+                            if ($chat['sender_id'] === $_SESSION['user_id']) {
+                        ?>
+                                <!-- Chat Sent -->
+                                <div class="d-flex justify-content-end mb-3">
+                                    <div class="p-3 bg-success text-white rounded-3" style="max-width: 75%;">
+                                        <p class="mb-0"><?php echo $chat['content'] ?></p>
+                                        <small class="text-white-50"><?php echo date('h:i A', strtotime($chat['sent_at'])) ?></small>
+                                    </div>
+                                </div>
+                            <?php } ?>
 
                         <!-- Chat Received -->
+                        
+                        <?php if ($chat['sender_id'] !== $_SESSION['user_id']) { ?>
                         <div class="d-flex mb-3">
                             <div class="p-3 bg-body-secondary rounded-3" style="max-width: 75%;">
-                                <p class="mb-0">Hello! How are you doing?</p>
-                                <small class="text-muted">12:00 PM</small>
+                                <p class="mb-0"><?php echo $chat['content'] ?></p>
+                                <small class="text-muted"><?php echo date('h:i A', strtotime($chat['sent_at'])) ?></small>
                             </div>
                         </div>
+                        <?php }?>
+                        <?php } ?>
 
-                        
                     </div>
                     <form action="">
                         <div class="p-3 border-top">
@@ -83,7 +116,7 @@
                             </div>
                         </div>
                     </form>
-                    
+
                 </div>
             </div>
 
