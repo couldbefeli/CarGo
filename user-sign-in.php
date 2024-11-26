@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Sign In</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
         html,
         body {
@@ -35,13 +37,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active text-success" href="index.html">HOME</a>
+                        <a class="nav-link active text-success" href="index.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-success" href="user-vehicles.html">VEHICLES</a>
+                        <a class="nav-link text-success" href="user-vehicles.php">VEHICLES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-success-emphasis" href="user-sign-in.html">SIGN IN</a>
+                        <a class="nav-link text-success-emphasis" href="user-sign-in.php">SIGN IN</a>
                     </li>
                 </ul>
             </div>
@@ -51,97 +53,29 @@
     <main class='my-4'>
         <div class="container d-flex justify-content-center">
             <div>
-                <h1 class="mb-5 text-center">Sign Up</h1>
+                <h1 class="mb-5 text-center">Sign In</h1>
                 <div class="px-5 py-5 bg-white shadow">
-                    <div class="container" style="max-width: 729px;">
-                        <form class="d-flex flex-column justify-content-center">
-                            <div class="row">
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="username" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="username"
-                                            >
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="firstname" class="form-label">First name</label>
-                                        <input type="text" class="form-control" id="firstname"
-                                            >
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="lastname" class="form-label">Last name</label>
-                                        <input type="text" class="form-control" id="lastname"
-                                            >
-                                    </div>
-                                </div>
-
+                    <div class="container" style="max-width: 500px;">
+                        <form>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="text" class="form-control" id="email" >
                             </div>
-
-                            <div class="row ">
-
-                                <div class="mb-3 d-flex col ">
-                                    <div class="w-100">
-                                        <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address"
-                                            >
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="email" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="email"
-                                            >
-                                    </div>
-                                </div>
-
-
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password">
                             </div>
-
-                            <div class="row ">
-
-                                <div class="mb-3 d-flex col ">
-                                    <div class="w-100">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="text" class="form-control" id="email"
-                                            >
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row ">
-
-                                <div class="mb-3 d-flex col ">
-                                    <div class="w-100">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="text" class="form-control" id="password"
-                                            >
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="confirmpassword" class="form-label">Confirm Password</label>
-                                        <input type="text" class="form-control" id="confirmpassword"
-                                            >
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            <input type="submit" class="btn btn-success" value="Sign In">
+                            <input type="submit" class="btn btn-success w-100" value="Sign In">
                         </form>
                         <hr>
                         <div class="text-center">
-                            <p>Already have an account? <a href="user-sign-in.html" class="text-success">Sign In</a></p>
+                            <p class="m-0">Don’t have an account? <a href="user-sign-up.php" class="text-success">Sign
+                                    Up</a></p>
+                            <small class="text-body-tertiary fw-lighter">
+                                <i class="bi bi-info-circle"></i>
+                                If you are an
+                                admin trying to sign in, <a href="admin-sign-in.php" class="text-body-tertiary">sign in
+                                    here</a></small>
                         </div>
                     </div>
                 </div>
@@ -150,7 +84,7 @@
 
     </main>
 
-    <footer class="footer mt-auto bg-light my-5 py-5">
+    <footer class="footer mt-auto bg-light py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 d-flex align-items-center mb-3 mb-md-0">

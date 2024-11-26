@@ -20,10 +20,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active text-success" href="index.html">HOME</a>
+                        <a class="nav-link active text-success" href="index.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-success" href="user-vehicles.html">VEHICLES</a>
+                        <a class="nav-link text-success" href="user-vehicles.php">VEHICLES</a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
                         <img src="img/avatar.png" alt="User Avatar" width="24" height="24" class="me-2">
@@ -40,13 +40,13 @@
             <aside class="col-12 col-md-3 col-lg-2 bg-light p-3 d-flex flex-column mt-5 rounded" style="height: max-content;">
                 <ul class="nav flex-column">
                     <li class="nav-item mb-3 bg-success rounded">
-                        <a class="nav-link text-white" href="user-chats.html"><i class="bi bi-chat-dots me-2"></i>Chats</a>
+                        <a class="nav-link text-white" href="user-chats.php"><i class="bi bi-chat-dots me-2"></i>Chats</a>
                     </li>
                     <li class="nav-item mb-3 ">
-                        <a class="nav-link text-dark" href="user-billing-history.html"><i class="bi bi-receipt me-2"></i>Billing History</a>
+                        <a class="nav-link text-dark" href="user-billing-history.php"><i class="bi bi-receipt me-2"></i>Billing History</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="user-profile.html"><i class="bi bi-person-circle me-2"></i>Profile</a>
+                        <a class="nav-link text-dark" href="user-profile.php"><i class="bi bi-person-circle me-2"></i>Profile</a>
                     </li>
                 </ul>
             </aside>

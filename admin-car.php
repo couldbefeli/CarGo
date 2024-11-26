@@ -61,22 +61,22 @@
                 <div class="container-fluid mb-5 d-flex justify-content-center">
                     <img src="img/cargo-logo-assets/CarGo-Large.png" alt="">
                 </div>
-                <a href="admin-analytics.html"><button class="btn text-success w-100 d-flex align-items-start"><i
+                <a href="admin-analytics.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-bar-chart-fill me-2"></i>Analytics</button></a>
-                <a href="admin-car.html"><button class="btn btn-success w-100 d-flex align-items-start"><i
+                <a href="admin-car.php"><button class="btn btn-success w-100 d-flex align-items-start"><i
                             class="bi bi-car-front-fill me-2"></i>Cars</button></a>
-                <a href="admin-user.html"><button class="btn text-success w-100 d-flex align-items-start"><i
+                <a href="admin-user.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-people-fill me-2"></i>Users</button></a>
                 <a href="#"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-clock-fill me-2"></i>Rental History</button></a>
 
                 <hr class="text-secondary my-4">
-                <a href="admin-chats.html"><button class="btn text-success w-100 d-flex align-items-start"><i
+                <a href="admin-chats.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-chat-dots-fill me-2 position-relative"><span
                                 class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                                 <span class="visually-hidden">New alerts</span>
                             </span></i></i>Chats</button></a>
-                <a href="admin-profile.html"><button class="btn text-success w-100 d-flex align-items-start"><i
+                <a href="admin-profile.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-gear-fill me-2"></i></i>Profile</button></a>
             </nav>
         </div>

@@ -1,3 +1,6 @@
+<?php 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,13 +31,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active text-success-emphasis" href="index.html">HOME</a>
+                        <a class="nav-link active text-success-emphasis" href="index.php">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-success" href="user-vehicles.html">VEHICLES</a>
+                        <a class="nav-link text-success" href="user-vehicles.php">VEHICLES</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-success" href="user-sign-in.html">SIGN IN</a>
+                        <a class="nav-link text-success" href="user-sign-in.php">SIGN IN</a>
                     </li>
                 </ul>
             </div>
@@ -47,7 +50,9 @@
                 <img class="green-picture" src="img/green-circle.png" alt="a green image">
             </div>
             <div class="cargo-title">
-                <h1>CarGo</h1>
+                <h1>CarGo
+
+                </h1>
             </div>
         </div>
         <div class="second-row">

@@ -124,12 +124,12 @@
                         </form>
                         <hr>
                         <div class="text-center">
-                            <p class="m-0">Already have an account? <a href="admin-sign-in.html" class="text-success">Sign
+                            <p class="m-0">Already have an account? <a href="admin-sign-in.php" class="text-success">Sign
                                     In</a></p>
                             <small class="text-body-tertiary fw-lighter">
                                 <i class="bi bi-info-circle"></i>
                                 If you are a
-                                user trying to sign up, <a href="user-sign-up.html" class="text-body-tertiary">sign up
+                                user trying to sign up, <a href="user-sign-up.php" class="text-body-tertiary">sign up
                                     here</a></small>
                         </div>
                     </div>

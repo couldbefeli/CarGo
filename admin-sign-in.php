@@ -50,12 +50,12 @@
                         </form>
                         <hr>
                         <div class="text-center">
-                            <p class="m-0">Don’t have an account? <a href="admin-sign-up.html" class="text-success">Sign
+                            <p class="m-0">Don’t have an account? <a href="admin-sign-up.php" class="text-success">Sign
                                     Up</a></p>
                             <small class="text-body-tertiary fw-lighter">
                                 <i class="bi bi-info-circle"></i>
                                 If you are a
-                                user trying to sign in, <a href="user-sign-in.html" class="text-body-tertiary">sign in
+                                user trying to sign in, <a href="user-sign-in.php" class="text-body-tertiary">sign in
                                     here</a></small>
                         </div>
                     </div>
