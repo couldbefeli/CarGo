@@ -108,11 +108,11 @@ $chats = $statement->fetchAll(PDO::FETCH_ASSOC);
                         <?php } ?>
 
                     </div>
-                    <form action="">
+                    <form action="user-chats-logic.php" method="POST">
                         <div class="p-3 border-top">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder='Aa' aria-label="Type a message">
-                                <button class="btn btn-success" type="button"><i class="bi bi-send-fill"></i></button>
+                                <input type="text" minlength="1" class="form-control" name="message-content" placeholder='Aa' aria-label="Type a message">
+                                <button class="btn btn-success" type="submit"><i class="bi bi-send-fill"></i></button>
                             </div>
                         </div>
                     </form>

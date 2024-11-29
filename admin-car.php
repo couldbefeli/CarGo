@@ -1,3 +1,15 @@
+<?php
+
+require 'connection.php';
+
+$sqlCarType = "SELECT type_name, brand_name FROM `car_type`, `car_brand` WHERE car_type.type_id = car_brand.brand_id";
+$statement = $connection->prepare($sqlCarType);
+$statement->execute();
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +64,6 @@
 
 <body>
 
-
     <!-- Sidebar -->
     <div class="sidebar bg-white shadow-lg d-flex flex-column justify-content-between vh-100">
         <div>
@@ -97,11 +108,24 @@
     <div class="content">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Car Management</h2>
-            <button type="button" class="btn btn-success d-flex align-items-center" data-bs-toggle="modal"
-                data-bs-target="#addCarModal" id="addCarModalButton">
-                <i class="bi bi-plus-lg me-2"></i>
-                Add Car
-            </button>
+            <div class="d-flex">
+                <button type="button" class="btn btn-success d-flex align-items-center me-2" data-bs-toggle="modal"
+                    data-bs-target="#addCarBrandModal" id="addCarBrandModalButton">
+                    <i class="bi bi-plus-lg me-2"></i>
+                    Add Car Brand
+                </button>
+                <button type="button" class="btn btn-success d-flex align-items-center me-2" data-bs-toggle="modal"
+                    data-bs-target="#addCarTypeModal" id="addCarTypeModalButton">
+                    <i class="bi bi-plus-lg me-2"></i>
+                    Add Car Type
+                </button>
+                <button type="button" class="btn btn-success d-flex align-items-center" data-bs-toggle="modal"
+                    data-bs-target="#addCarModal" id="addCarModalButton">
+                    <i class="bi bi-plus-lg me-2"></i>
+                    Add Car
+                </button>
+            </div>
+
         </div>
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 row-cols-xl-9 gx-3 gy-4">
             <!-- Card 1 -->
@@ -124,6 +148,51 @@
         </div>
     </div>
 
+    <!-- modal for add CAR BRAND -->
+    <div class="modal fade" id="addCarBrandModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add a Car Brand</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="admin-add-car-brand.php" method="POST">
+                    <div class="modal-body">
+                        <label for="addCarBrandInput"><sub>Car Brand</sub></label>
+                        <input type="text" name="addCarBrandInput" id="addCarBrandInput" class="form-control mt-2" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="addCarBrandButton">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- modal for add CAR TYPE -->
+
+    <div class="modal fade" id="addCarTypeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Add a Car Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="admin-add-car-type.php" method="POST">
+                    <div class="modal-body">
+                        <label for="addCarTypeInput"><sub>Car Type</sub></label>
+                        <input type="text" name="addCarTypeInput" id="addCarTypeInput" class="form-control mt-2">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="addCarTypeButton">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
     <!-- modal for add car -->
 
     <div class="modal fade" id="addCarModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -133,78 +202,85 @@
                     <h5 class="modal-title" id="staticBackdropLabel">Add Car</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text" for="inputGroupFile01">Image</label>
-                        <input type="file" class="form-control" id="inputGroupFile01">
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Brand</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm">
+                <form action="admin-add-car.php" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <label class="input-group-text" for="inputGroupFile01" accept=".jpg, .jpeg, .png">Image</label>
+                            <input type="file" class="form-control" id="inputGroupFile01" name="carPic">
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <select class="form-select" name="brand">
+                                    <option value="" disabled selected>Brand</option>
+
+                                    <?php foreach ($result as $row): ?>
+
+                                        <option value="<?php echo $row['brand_name'] ?>"><?php echo $row['brand_name'] ?></option>
+                                    <?php endforeach; ?> 
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-3">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Model</span>
+                                    <input type="text" class="form-control" aria-label="Sizing example input"
+                                        aria-describedby="inputGroup-sizing-sm" name="model">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Model</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-2">
+
+                                    <select class="form-select" name="type">
+                                        <option value="" selected disabled>Type</option>
+                                        <?php foreach ($result as $row): ?>
+                                        <option value="<?php echo $row['type_name'] ?>"><?php echo $row['type_name'] ?></option>
+                                        
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-2">
+
+                                    <select class="form-select" name="transmission">
+                                        <option value="" selected disabled>Transmission</option>
+                                        <option value="automatic">Automatic</option>
+                                        <option value="manual">Manual</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col">
-                            <select class="form-select">
-                                <option selected>Car Type</option>
-                                <option value="minivan">Minivan</option>
-                                <option value="van">Van</option>
-                                <option value="suv">SUV</option>
-                                <option value="luxury">Luxury</option>
-                                <option value="wagon">Wagon</option>
-                                <option value="pickup">Pickup</option>
-                                <option value="sedan">Sedan</option>
-                                <option value="compact">Compact</option>
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <select class="form-select">
-                                <option selected>Transmission</option>
-                                <option value="automatic">Automatic</option>
-                                <option value="manual">Manual</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <select class="form-select">
-                                <option selected>Capacity</option>
-                                <option value="2">2</option>
-                                <option value="4">4</option>
-                                <option value="6">6</option>
-                                <option value="8">8</option>
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Price</span>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-2">
+                                <span class="input-group-text" id="">Seats</span>
                                 <input type="number" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm">
+                                aria-describedby="inputGroup-sizing-sm" name="seats">
+                                    
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="input-group input-group-sm mb-2">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Price</span>
+                                    <input type="number" class="form-control" aria-label="Sizing example input"
+                                        aria-describedby="inputGroup-sizing-sm" name="price">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Save changes</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" name="addCarButton">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -239,7 +315,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="row">
                         <div class="col">
                             <div class="input-group input-group-sm mb-3">
