@@ -7,6 +7,10 @@ $statement = $connection->prepare($sqlCarType);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+$sqlCars = "SELECT * FROM `cars`";
+$statement = $connection->prepare($sqlCars);
+$statement->execute();
+$result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -67,7 +71,6 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     <!-- Sidebar -->
     <div class="sidebar bg-white shadow-lg d-flex flex-column justify-content-between vh-100">
         <div>
-            <h4>Admin Dashboard</h4>
             <nav class="">
                 <div class="container-fluid mb-5 d-flex justify-content-center">
                     <img src="img/cargo-logo-assets/CarGo-Large.png" alt="">
@@ -91,6 +94,8 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                             class="bi bi-gear-fill me-2"></i></i>Profile</button></a>
             </nav>
         </div>
+
+
 
         <div>
             <hr class="text-secondary my-4">
@@ -129,22 +134,138 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 row-cols-xl-9 gx-3 gy-4">
             <!-- Card 1 -->
-            <div class="col">
-                <div class="card bg-transparent" style="width: 100%;">
-                    <div class="bg-body-secondary p-5">
-                        <img src="img/car.png" class="card-img-top" alt="...">
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-title">Chevrolet Corvette Z06 2018</h6>
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-sm btn-danger w-100 me-2" data-bs-toggle="modal"
-                                data-bs-target="#deleteCarModal" id="deleteCarModalButton">Delete</button>
-                            <button class="btn btn-sm btn-warning  w-100" data-bs-toggle="modal"
-                                data-bs-target="#editCarModal" id="editCarModalButton">Update</button>
+            <?php foreach ($result2 as $row): ?>
+                <div class="col">
+                    <div class="card bg-transparent" style="width: 100%;">
+                        <div class="bg-body-secondary p-5">
+                            <img src="img/cars/<?php echo $row['Car_Image'] ?>" class="card-img-top" alt="..." width="100" height="100">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title"><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h6>
+                            <div class="d-flex justify-content-between">
+                                <!-- Delete Button -->
+                                <button class="btn btn-sm btn-danger w-100 me-2" data-bs-toggle="modal"
+                                    data-bs-target="#deleteCarModal-<?php echo $row['Car_ID']; ?>">Delete</button>
+
+                                <!-- Delete Modal -->
+                                <div class="modal fade" id="deleteCarModal-<?php echo $row['Car_ID']; ?>" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">This cannot be undone.</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete <b><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></b>?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <form action="admin-delete-car-logic.php" method="GET">
+                                                    <input type="hidden" value="<?php echo $row['Car_ID'] ?>" name="id">
+                                                    <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Update Button -->
+                                <button class="btn btn-sm btn-warning w-100" data-bs-toggle="modal"
+                                    data-bs-target="#editCarModal-<?php echo $row['Car_ID']; ?>">Update</button>
+
+                                <!-- Update Modal -->
+                                <div class="modal fade" id="editCarModal-<?php echo $row['Car_ID']; ?>" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <select class="form-select" name="brand">
+                                                                <option value="" disabled>Brand</option>
+                                                                <?php foreach ($result as $rows):
+                                                                    $selected = ($rows['brand_name'] === $row['Brand']) ? 'selected' : '';
+                                                                ?>
+                                                                    <option value="<?php echo $rows['brand_name'] ?>" <?php echo $selected; ?>>
+                                                                        <?php echo htmlspecialchars($rows['brand_name']); ?>
+                                                                    </option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text">Model</span>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="<?php echo $row['Model_Name'] ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col">
+                                                        <div class="input-group input-group-sm mb-2">
+                                                            <select class="form-select">
+                                                                <option disabled>Car Type</option>
+                                                                <?php foreach ($result as $rows):
+                                                                    $selected = ($rows['type_name'] === $row['Car_Type']) ? 'selected' : '';
+                                                                ?>
+                                                                    <option value="<?php echo $rows['type_name'] ?>" <?php echo $selected; ?>>
+                                                                        <?php echo htmlspecialchars($rows['type_name']); ?>
+                                                                    </option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="input-group input-group-sm mb-2">
+                                                            <select class="form-select">
+                                                                <?php $isAutomatic = $row['Transmission'] === 'automatic'; ?>
+                                                                <option disabled>Transmission</option>
+                                                                <option value="automatic" <?php echo $isAutomatic ? 'selected' : '' ?>>
+                                                                    Automatic
+                                                                </option>
+                                                                <option value="manual" <?php echo !$isAutomatic ? 'selected' : '' ?>>
+                                                                    Manual
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text">Capacity</span>
+                                                            <input type="number" class="form-control"
+                                                                placeholder="<?php echo $row['Capacity'] ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                            <span class="input-group-text">Price (₱)</span>
+                                                            <input type="number" class="form-control"
+                                                                placeholder="<?php echo $row['Price'] ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-warning">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
+
         </div>
     </div>
 
@@ -212,12 +333,12 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                             <div class="col">
                                 <div class="input-group input-group-sm mb-3">
                                     <select class="form-select" name="brand">
-                                    <option value="" disabled selected>Brand</option>
+                                        <option value="" disabled selected>Brand</option>
 
-                                    <?php foreach ($result as $row): ?>
+                                        <?php foreach ($result as $row): ?>
 
-                                        <option value="<?php echo $row['brand_name'] ?>"><?php echo $row['brand_name'] ?></option>
-                                    <?php endforeach; ?> 
+                                            <option value="<?php echo $row['brand_name'] ?>"><?php echo $row['brand_name'] ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
@@ -238,9 +359,10 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                                     <select class="form-select" name="type">
                                         <option value="" selected disabled>Type</option>
                                         <?php foreach ($result as $row): ?>
-                                        <option value="<?php echo $row['type_name'] ?>"><?php echo $row['type_name'] ?></option>
-                                        
+
+                                            <option value="<?php echo $row['type_name'] ?>"><?php echo $row['type_name'] ?></option>
                                         <?php endforeach; ?>
+
                                     </select>
                                 </div>
                             </div>
@@ -260,10 +382,10 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                         <div class="row">
                             <div class="col">
                                 <div class="input-group input-group-sm mb-2">
-                                <span class="input-group-text" id="">Seats</span>
-                                <input type="number" class="form-control" aria-label="Sizing example input"
-                                aria-describedby="inputGroup-sizing-sm" name="seats">
-                                    
+                                    <span class="input-group-text" id="">Seats</span>
+                                    <input type="number" class="form-control" aria-label="Sizing example input"
+                                        aria-describedby="inputGroup-sizing-sm" name="seats">
+
                                 </div>
                             </div>
 
@@ -285,106 +407,9 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- modal for delete car -->
 
-    <div class="modal fade" id="deleteCarModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Are you sure you want to delete this Car?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>This cannot be undone.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- modal for update car -->
 
-    <div class="modal fade" id="editCarModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Chevrolet Corvette Z06-2018</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="row">
-                        <div class="col">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Brand</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" placeholder="Chevrolet">
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Model</span>
-                                <input type="text" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" placeholder="Corvette Z06-2018">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <select class="form-select">
-                                <option selected>Car Type</option>
-                                <option value="minivan">Minivan</option>
-                                <option value="van">Van</option>
-                                <option value="suv">SUV</option>
-                                <option value="luxury">Luxury</option>
-                                <option value="wagon">Wagon</option>
-                                <option value="pickup">Pickup</option>
-                                <option value="sedan">Sedan</option>
-                                <option value="compact">Compact</option>
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <select class="form-select">
-                                <option selected>Transmission</option>
-                                <option value="automatic">Automatic</option>
-                                <option value="manual">Manual</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <select class="form-select">
-                                <option selected>Capacity</option>
-                                <option value="2">2</option>
-                                <option value="4">4</option>
-                                <option value="6">6</option>
-                                <option value="8">8</option>
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <div class="input-group input-group-sm mb-3">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Price (₱)</span>
-                                <input type="number" class="form-control" aria-label="Sizing example input"
-                                    aria-describedby="inputGroup-sizing-sm" placeholder="20,000">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-warning">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 
