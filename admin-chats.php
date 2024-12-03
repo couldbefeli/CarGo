@@ -120,7 +120,6 @@
     <!-- Sidebar -->
     <div class="sidebar bg-white shadow-lg d-flex flex-column justify-content-between vh-100">
         <div>
-            <h4>Admin Dashboard</h4>
             <nav class="">
                 <div class="container-fluid mb-5 d-flex justify-content-center">
                     <img src="img/cargo-logo-assets/CarGo-Large.png" alt="">

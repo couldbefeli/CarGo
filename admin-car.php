@@ -81,7 +81,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                             class="bi bi-car-front-fill me-2"></i>Cars</button></a>
                 <a href="admin-user.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-people-fill me-2"></i>Users</button></a>
-                <a href="#"><button class="btn text-success w-100 d-flex align-items-start"><i
+                <a href="admin-rental.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-clock-fill me-2"></i>Rental History</button></a>
 
                 <hr class="text-secondary my-4">
@@ -177,86 +177,93 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="modal fade" id="editCarModal-<?php echo $row['Car_ID']; ?>" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title"><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <select class="form-select" name="brand">
-                                                                <option value="" disabled>Brand</option>
-                                                                <?php foreach ($result as $rows):
-                                                                    $selected = ($rows['brand_name'] === $row['Brand']) ? 'selected' : '';
-                                                                ?>
-                                                                    <option value="<?php echo $rows['brand_name'] ?>" <?php echo $selected; ?>>
-                                                                        <?php echo htmlspecialchars($rows['brand_name']); ?>
+                                            <form action="admin-update-car-logic.php" method="POST">
+
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <select class="form-select" name="brand">
+                                                                    <option value="" disabled>Brand</option>
+                                                                    <?php foreach ($result as $rows):
+                                                                        $selected = ($rows['brand_name'] === $row['Brand']) ? 'selected' : '';
+                                                                    ?>
+                                                                        <option value="<?php echo $rows['brand_name'] ?>" <?php echo $selected; ?>>
+                                                                            <?php echo htmlspecialchars($rows['brand_name']); ?>
+                                                                        </option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text">Model</span>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="<?php echo $row['Model_Name'] ?>" name="model" required value="<?php echo $row['Model_Name'] ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            <div class="input-group input-group-sm mb-2">
+                                                                <select class="form-select" name="type">
+                                                                    <option disabled>Car Type</option>
+                                                                    <?php foreach ($result as $rows):
+                                                                        $selected = ($rows['type_name'] === $row['Car_Type']) ? 'selected' : '';
+                                                                    ?>
+                                                                        <option value="<?php echo $rows['type_name'] ?>" <?php echo $selected; ?>>
+                                                                            <?php echo htmlspecialchars($rows['type_name']); ?>
+                                                                        </option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="input-group input-group-sm mb-2">
+                                                                <select class="form-select" name="transmission">
+                                                                    <?php $isAutomatic = $row['Transmission'] === 'automatic'; ?>
+                                                                    <option disabled>Transmission</option>
+                                                                    <option value="automatic" <?php echo $isAutomatic ? 'selected' : '' ?>>
+                                                                        Automatic
                                                                     </option>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text">Model</span>
-                                                            <input type="text" class="form-control"
-                                                                placeholder="<?php echo $row['Model_Name'] ?>">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col">
-                                                        <div class="input-group input-group-sm mb-2">
-                                                            <select class="form-select">
-                                                                <option disabled>Car Type</option>
-                                                                <?php foreach ($result as $rows):
-                                                                    $selected = ($rows['type_name'] === $row['Car_Type']) ? 'selected' : '';
-                                                                ?>
-                                                                    <option value="<?php echo $rows['type_name'] ?>" <?php echo $selected; ?>>
-                                                                        <?php echo htmlspecialchars($rows['type_name']); ?>
+                                                                    <option value="manual" <?php echo !$isAutomatic ? 'selected' : '' ?>>
+                                                                        Manual
                                                                     </option>
-                                                                <?php endforeach; ?>
-                                                            </select>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col">
-                                                        <div class="input-group input-group-sm mb-2">
-                                                            <select class="form-select">
-                                                                <?php $isAutomatic = $row['Transmission'] === 'automatic'; ?>
-                                                                <option disabled>Transmission</option>
-                                                                <option value="automatic" <?php echo $isAutomatic ? 'selected' : '' ?>>
-                                                                    Automatic
-                                                                </option>
-                                                                <option value="manual" <?php echo !$isAutomatic ? 'selected' : '' ?>>
-                                                                    Manual
-                                                                </option>
-                                                            </select>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text">Capacity</span>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="<?php echo $row['Capacity'] ?>" name="capacity" required value="<?php echo $row['Capacity'] ?>">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text">Capacity</span>
-                                                            <input type="number" class="form-control"
-                                                                placeholder="<?php echo $row['Capacity'] ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="input-group input-group-sm mb-3">
-                                                            <span class="input-group-text">Price (₱)</span>
-                                                            <input type="number" class="form-control"
-                                                                placeholder="<?php echo $row['Price'] ?>">
+                                                        <div class="col">
+                                                            <div class="input-group input-group-sm mb-3">
+                                                                <span class="input-group-text">Price (₱)</span>
+                                                                <input type="number" class="form-control"
+                                                                    placeholder="<?php echo $row['Price'] ?>" name="price" required value="<?php echo $row['Price'] ?>">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-warning">Update</button>
-                                            </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <?php ?>
+                                                    <input type="hidden" name="update_id" value="<?php echo $row['Car_ID'] ?>">
+                                                    <button type="submit" class="btn btn-warning" name="carUpdateButton">Update</button>
+                                                </div>
+                                            </form>
+
                                         </div>
+
                                     </div>
                                 </div>
 

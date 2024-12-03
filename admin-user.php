@@ -56,7 +56,6 @@
     <!-- Sidebar -->
     <div class="sidebar bg-white shadow-lg d-flex flex-column justify-content-between vh-100">
         <div>
-            <h4>Admin Dashboard</h4>
             <nav class="">
                 <div class="container-fluid mb-5 d-flex justify-content-center">
                     <img src="img/cargo-logo-assets/CarGo-Large.png" alt="">
@@ -99,12 +98,12 @@
 
         <table class="table mt-3  w-100">
             <thead>
-                <tr>
+                <tr >
                     <th scope="col">#</th>
                     <th scope="col">First</th>
                     <th scope="col">Last</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" class="">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -117,9 +116,9 @@
                         <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#viewDetailsModal">Details</button>
                         <button class="btn btn-success btn-sm">Verify</button>
+                        <button class="btn btn-danger btn-sm">Block</button>
                     </td>
                 </tr>
-
 
             </tbody>
         </table>
