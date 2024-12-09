@@ -2,6 +2,15 @@
 
 require 'connection.php';
 
+
+session_start();
+
+if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
+    header('Location: admin-sign-in.php');
+    exit(); // Ensure the script stops execution after redirection
+}
+
+
 $sqlCarType = "SELECT type_name, brand_name FROM `car_type`, `car_brand` WHERE car_type.type_id = car_brand.brand_id";
 $statement = $connection->prepare($sqlCarType);
 $statement->execute();

@@ -1,3 +1,15 @@
+<?php 
+session_start();
+require 'connection.php';
+
+if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
+    header('Location: admin-sign-in.php');
+    exit(); // Ensure the script stops execution after redirection
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,7 +132,6 @@
     <!-- Sidebar -->
     <div class="sidebar bg-white shadow-lg d-flex flex-column justify-content-between vh-100">
         <div>
-            <h4>Admin Dashboard</h4>
             <nav class="">
                 <div class="container-fluid mb-5 d-flex justify-content-center">
                     <img src="img/cargo-logo-assets/CarGo-Large.png" alt="">

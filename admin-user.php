@@ -1,3 +1,16 @@
+<?php
+
+require 'connection.php';
+
+
+$sqlQuery = "SELECT * FROM `accounts` WHERE role = 'user'";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,7 +111,7 @@
 
         <table class="table mt-3  w-100">
             <thead>
-                <tr >
+                <tr>
                     <th scope="col">#</th>
                     <th scope="col">First</th>
                     <th scope="col">Last</th>
@@ -107,86 +120,96 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>Not Verified</td>
-                    <td>
-                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#viewDetailsModal">Details</button>
-                        <button class="btn btn-success btn-sm">Verify</button>
-                        <button class="btn btn-danger btn-sm">Block</button>
-                    </td>
-                </tr>
+                <?php foreach ($result as $row):
+                    $verified = $row["Verification"] ? "Verified" : "Not Verified";
+                ?>
+                    <tr>
+                        <th scope="row"><?php echo $row['Account_ID'] ?></th>
+                        <td><?php echo $row['First_Name'] ?></td>
+                        <td><?php echo $row['Last_Name'] ?></td>
+                        <td><?php echo $verified ?></td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#viewDetailsModal-<?php echo $row['Account_ID'] ?>">Details</button>
 
+                            <!-- modal for viewing details -->
+                            <div class="modal fade" id="viewDetailsModal-<?php echo $row['Account_ID'] ?>" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body m-0 p-0">
+                                            <img src="img/valid-ids/<?php echo $row['Valid_ID'] ?>" alt="" class="w-100">
+                                            <div class="container mb-2">
+                                                <div class="d-flex container" style="gap:.25rem">
+                                                    <div class="col">
+                                                        <label for="user_name" class="form-label text-body-tertiary"><sub>First
+                                                                Name</sub></label>
+                                                        <input type="text" class="form-control border-0 border-bottom rounded-0" id="user_firstname" placeholder="<?php echo $row['First_Name'] ?>"
+                                                            readonly=true>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="user_lastname" class="form-label text-body-tertiary"><sub>Last
+                                                                Name</sub></label>
+                                                        <input type="email" class="form-control border-0 border-bottom rounded-0" id="user_lastname" placeholder="<?php echo $row['Last_Name'] ?>"
+                                                            readonly=true>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="user_contact" class="form-label text-body-tertiary"><sub>Contact
+                                                                #</sub></label>
+                                                        <input type="text" class="form-control border-0 border-bottom rounded-0" id="user_contact" placeholder="<?php echo $row['Contact_Number'] ?>"
+                                                            readonly=true>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="container">
+                                                    <label for="user_lastname" class="form-label text-body-tertiary"><sub>Address</sub></label>
+                                                    <input type="email" class="form-control border-0 border-bottom rounded-0" id="user_lastname"
+                                                        placeholder="<?php echo $row['Address'] ?>" readonly=true>
+
+                                                    <div class="d-flex" style="gap: .25rem">
+                                                        <div>
+                                                            <label for="user_created"
+                                                                class="form-label text-body-tertiary"><sub>Account Created</sub></label>
+                                                            <input type="text" class="form-control border-0 border-bottom rounded-0" id="user_created" placeholder="<?php echo  date("F d, Y", strtotime($row['Account_Created']))  ?>"
+                                                                readonly=true>
+                                                        </div>
+
+                                                        <div>
+                                                            <label for="user_email"
+                                                                class="form-label text-body-tertiary"><sub>Email</sub></label>
+                                                            <input type="email" class="form-control border-0 border-bottom rounded-0" id="user_username" placeholder="<?php echo $row['Email'] ?>"
+                                                                readonly=true>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form action="admin-user-action.php" class="d-inline" method="POST">
+                                <input type="hidden" name="id" value="<?php echo $row['Account_ID'] ?>">
+                                <button name='verifyButton' class="btn btn-success btn-sm" <?php echo $row['Verification'] === 1 ? "disabled" : "" ?> type="submit">Verify</button>
+                                <button name='blockButton' class="btn btn-danger btn-sm" type="submit"><?php echo $row['Verification'] === 2 ? "Unblock" : "Block" ?></button>
+                            </form>
+
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-    <!-- modal for viewing details -->
-    <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body m-0 p-0">
-                    <img src="img/id-sample.png" alt="" class="w-100">
-                    <div class="container mb-2">
-                        <div class="d-flex container" style="gap:.25rem">
-                            <div class="col">
-                                <label for="user_name" class="form-label text-body-tertiary"><sub>First
-                                        Name</sub></label>
-                                <input type="text" class="form-control border-0 border-bottom rounded-0" id="user_firstname" placeholder="Juan"
-                                    readonly=true>
-                            </div>
 
-                            <div class="col">
-                                <label for="user_lastname" class="form-label text-body-tertiary"><sub>Last
-                                        Name</sub></label>
-                                <input type="email" class="form-control border-0 border-bottom rounded-0" id="user_lastname" placeholder="Dela Cruz"
-                                    readonly=true>
-                            </div>
-
-                            <div class="col">
-                                <label for="user_contact" class="form-label text-body-tertiary"><sub>Contact
-                                        #</sub></label>
-                                <input type="text" class="form-control border-0 border-bottom rounded-0" id="user_contact" placeholder="+639123456789"
-                                    readonly=true>
-                            </div>
-
-
-                        </div>
-
-                        <div class="container">
-                            <label for="user_lastname" class="form-label text-body-tertiary"><sub>Address</sub></label>
-                            <input type="email" class="form-control border-0 border-bottom rounded-0" id="user_lastname"
-                                placeholder="Okoye St. Magandang Buhay Subdivision Caloocan City" readonly=true>
-
-                            <div class="d-flex" style="gap: .25rem">
-                                <div>
-                                    <label for="user_username"
-                                    class="form-label text-body-tertiary"><sub>Username</sub></label>
-                                <input type="email" class="form-control border-0 border-bottom rounded-0" id="user_username" placeholder="juandelacruz00"
-                                    readonly=true>
-                                </div>
-                                
-                                <div>
-                                    <label for="user_email"
-                                    class="form-label text-body-tertiary"><sub>Email</sub></label>
-                                <input type="email" class="form-control border-0 border-bottom rounded-0" id="user_username" placeholder="juan00@gmail.com"
-                                    readonly=true>
-                                </div>
-                                    
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </body>
 

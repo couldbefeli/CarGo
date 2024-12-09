@@ -1,3 +1,15 @@
+<?php 
+session_start();
+require 'connection.php';
+
+if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
+    header('Location: admin-sign-in.php');
+    exit(); // Ensure the script stops execution after redirection
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

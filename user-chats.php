@@ -11,7 +11,6 @@ $statement = $connection->prepare($sqlQuery);
 $statement->execute();
 $chats = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-// print_r($chats)
 
 ?>
 

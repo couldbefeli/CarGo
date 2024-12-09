@@ -1,3 +1,12 @@
+<?php
+
+session_start();
+require 'connection.php';
+
+echo '<script>alert($_SESSION[\'error\']) </script>';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,29 +46,21 @@
                 </div>
                 <div class="px-5 py-5 bg-white shadow mt-4">
                     <div class="container" style="max-width: 500px;">
-                        <form>
+                        <form action="admin-sign-up-logic.php" method="POST">
                             <div class="row">
-
+                                
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
-                                        <label for="username" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="username"
+                                        <label for="admin_firstname" class="form-label">First name</label>
+                                        <input type="text" class="form-control" id="admin_firstname" name="admin_firstname"
                                             >
                                     </div>
                                 </div>
 
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
-                                        <label for="firstname" class="form-label">First name</label>
-                                        <input type="text" class="form-control" id="firstname"
-                                            >
-                                    </div>
-                                </div>
-
-                                <div class="mb-3 d-flex col">
-                                    <div class="w-100">
-                                        <label for="lastname" class="form-label">Last name</label>
-                                        <input type="text" class="form-control" id="lastname"
+                                        <label for="admin_lastname" class="form-label">Last name</label>
+                                        <input type="text" class="form-control" id="admin_lastname" name="admin_lastname"
                                             >
                                     </div>
                                 </div>
@@ -70,17 +71,17 @@
 
                                 <div class="mb-3 d-flex col ">
                                     <div class="w-100">
-                                        <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address"
+                                        <label for="admin_address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="admin_address" name="admin_address"
                                             >
                                     </div>
                                 </div>
 
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
-                                        <label for="email" class="form-label">Username</label>
-                                        <input type="text" class="form-control" id="email"
-                                            >
+                                        <label for="admin_contact" class="form-label">Contact #</label>
+                                        <input type="number" class="form-control" id="admin_contact"
+                                        name="admin_contact" >
                                     </div>
                                 </div>
 
@@ -91,9 +92,9 @@
 
                                 <div class="mb-3 d-flex col ">
                                     <div class="w-100">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="text" class="form-control" id="email"
-                                            >
+                                        <label for="admin_email" class="form-label">Email Address</label>
+                                        <input type="text" class="form-control" id="admin_email"
+                                        name="admin_email" >
                                     </div>
                                 </div>
 
@@ -103,24 +104,24 @@
 
                                 <div class="mb-3 d-flex col ">
                                     <div class="w-100">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="text" class="form-control" id="password"
-                                            >
+                                        <label for="admin_password" class="form-label">Password</label>
+                                        <input type="text" class="form-control" id="admin_password"
+                                        name="admin_password" >
                                     </div>
                                 </div>
 
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
-                                        <label for="confirmpassword" class="form-label">Confirm Password</label>
-                                        <input type="text" class="form-control" id="confirmpassword"
-                                            >
+                                        <label for="admin_confirmpassword" class="form-label">Confirm Password</label>
+                                        <input type="text" class="form-control" id="admin_confirmpassword"
+                                        name="admin_confirmpassword">
                                     </div>
                                 </div>
 
 
                             </div>
 
-                            <input type="submit" class="btn btn-success w-100" value="Sign In">
+                            <input type="submit" class="btn btn-success w-100" value="Sign In" name="adminSignUpButton">
                         </form>
                         <hr>
                         <div class="text-center">

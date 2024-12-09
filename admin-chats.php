@@ -1,3 +1,13 @@
+<?php
+require 'connection.php';
+
+$sqlQuery = "SELECT * FROM `accounts` WHERE Verification = 1";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -161,19 +171,14 @@
         <div>
             <div class="container text-success">
                 <div>
-                    <a class="btn m-0 p-0 py-2 btn-success mb-2">
-                        <div class="container-fluid d-flex  w-100 align-items-center">
-                            <img src="img/avatar.png" alt="" width="34" class=" me-2 rounded-circle">
-                            <small class="m-0 ">Juan Dela Cruz</small>
-                        </div>
-                    </a>
-
-                    <a class="btn m-0 p-0 py-2 border-0 mb-2 rounded-0 border-bottom">
-                        <div class="container-fluid d-flex text-success w-100 align-items-center">
-                            <img src="img/avatar.png" alt="" width="34" class=" me-2 rounded-circle">
-                            <small class="m-0 ">Maria Labo</small>
-                        </div>
-                    </a>
+                    <?php foreach ($result as $row): ?>
+                        <a class="btn m-0 p-0 py-2 mb-2">
+                            <div class="container-fluid d-flex text-success  w-100 align-items-center">
+                                <img src="img/avatar.png" alt="" width="34" class=" me-2 rounded-circle">
+                                <small class="m-0 "><?php echo $row['First_Name'] . " " . $row['Last_Name'] ?></small>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

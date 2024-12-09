@@ -1,3 +1,15 @@
+<?php
+
+session_start();
+require 'connection.php';
+
+if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
+    header('Location: admin-sign-in.php');
+    exit(); // Ensure the script stops execution after redirection
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,7 +85,7 @@
                 <a href="admin-chats.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-chat-dots-fill me-2 position-relative"><span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                                 <span class="visually-hidden">New alerts</span>
-                              </span></i></i>Chats</button></a>
+                            </span></i></i>Chats</button></a>
                 <a href="admin-profile.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-gear-fill me-2"></i></i>Profile</button></a>
             </nav>

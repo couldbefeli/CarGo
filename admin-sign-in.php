@@ -1,3 +1,14 @@
+<?php
+
+session_start();
+require 'connection.php';
+
+if (isset($_SESSION['admin_email']) && $_SESSION['admin_id']) {
+    header('admin-analytics.php');
+} 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,16 +48,16 @@
                 </div>
                 <div class="px-5 py-5 bg-white shadow mt-4">
                     <div class="container" style="max-width: 500px;">
-                        <form>
+                        <form action="admin-sign-in-logic.php" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
-                                <input type="text" class="form-control" id="email" >
+                                <input type="text" class="form-control" id="email" name="email">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password">
+                                <input type="password" class="form-control" id="password" name="password">
                             </div>
-                            <input type="submit" class="btn btn-success w-100" value="Sign In">
+                            <input type="submit" class="btn btn-success w-100" value="Sign In" name="adminSignInButton">
                         </form>
                         <hr>
                         <div class="text-center">
