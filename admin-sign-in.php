@@ -7,6 +7,22 @@ if (isset($_SESSION['admin_email']) && $_SESSION['admin_id']) {
     header('admin-analytics.php');
 } 
 
+if (isset($_SESSION['admin_success'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['admin_success'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['admin_success']); // Clear the error message after displaying it
+}
+
+if (isset($_SESSION['error'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['error']); // Clear the error message after displaying it
+}
+
 ?>
 
 <!DOCTYPE html>

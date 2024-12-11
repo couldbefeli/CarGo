@@ -8,6 +8,13 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
 }
 
 
+
+$sqlQuery = "SELECT * FROM `accounts` WHERE Account_ID = {$_SESSION['admin_id']}";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$user = $statement->fetch(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -184,29 +191,28 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                 <div class="row text-start mt-4">
                     <div class="col-md-6 mb-3">
                         <sub class="form-sub text-body-tertiary">First Name:</sub>
-                        <p class="form-control-plaintext">John</p>
+                        <p class="form-control-plaintext"><?php echo $user['First_Name'] ?></p>
                     </div>
                     <div class="col-md-6 mb-3">
                         <sub class="form-sub text-body-tertiary">Last Name:</sub>
-                        <p class="form-control-plaintext">Doe</p>
+                        <p class="form-control-plaintext"><?php echo $user['Last_Name'] ?></p>
                     </div>
                     <div class="col-md-6 mb-3">
                         <sub class="form-sub text-body-tertiary">Email:</sub>
-                        <p class="form-control-plaintext">john.doe@example.com</p>
-                    </div>
-                    <div class="col-md-6 mb-3 text-body-tertiary">
-                        <sub class="form-sub">Username:</sub>
-                        <p class="form-control-plaintext">Admin01</p>
+                        <p class="form-control-plaintext"><?php echo $user['Email'] ?></p>
                     </div>
                     <div class="col-md-12 mb-3">
                         <sub class="form-sub text-body-tertiary">Address:</sub>
-                        <p class="form-control-plaintext">123 Main St, Springfield, USA</p>
+                        <p class="form-control-plaintext"><?php echo $user['Address'] ?></p>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
+                    <a href="admin-logout.php">
                     <button class="btn text-success me-2" >
                         Log out
                     </button>
+                    </a>
+                    
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                         Change Password
                     </button>
@@ -226,20 +232,20 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-sub="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="admin-update-password-logic.php" method="POST">
                             <div class="mb-3">
                                 <sub for="currentPassword" class="form-sub text-body-tertiary">Current Password</sub>
-                                <input type="password" class="form-control" id="currentPassword" required>
+                                <input type="password" class="form-control" id="currentPassword" name="adminCurrentPassword" required>
                             </div>
                             <div class="mb-3">
                                 <sub for="newPassword" class="form-sub text-body-tertiary">New Password</sub>
-                                <input type="password" class="form-control" id="newPassword" required>
+                                <input type="password" class="form-control" id="newPassword" name="adminNewPassword" required>
                             </div>
                             <div class="mb-3">
                                 <sub for="confirmPassword" class="form-sub text-body-tertiary">Confirm New Password</sub>
-                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <input type="password" class="form-control" id="confirmPassword" name="adminConfirmPassword" required>
                             </div>
-                            <button type="submit" class="btn btn-success">Update Password</button>
+                            <button type="submit" class="btn btn-success" name="adminUpdatePasswordButton">Update Password</button>
                         </form>
                     </div>
                 </div>

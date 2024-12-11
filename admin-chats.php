@@ -1,5 +1,10 @@
 <?php
+
+session_start();
 require 'connection.php';
+if(!isset ($_SESSION['admin_email'])) {
+    header('Location: admin-sign-in.php');
+}
 
 $sqlQuery = "SELECT * FROM `accounts` WHERE Verification = 1";
 $statement = $connection->prepare($sqlQuery);

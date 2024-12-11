@@ -2,7 +2,7 @@
 
 session_start();
 require 'connection.php';
-if (!isset($_SESSION['email'])) {
+if (!isset ($_SESSION['email'])) {
     header('Location: user-sign-in.php');
 }
 
