@@ -5,6 +5,7 @@ if (isset($_POST['verifyButton'])) {
 
     $id = $_POST['id'];
 
+    // admin verify
     $sqlQuery = "UPDATE `accounts` SET Verification = 1 WHERE Account_ID = $id";
     $statement = $connection->prepare($sqlQuery);
     $statement->execute(); 
@@ -13,6 +14,7 @@ if (isset($_POST['verifyButton'])) {
 
 } elseif (isset($_POST['blockButton'])) {
 
+    // admin block
     $id = $_POST['id'];
     $sqlQuery = "UPDATE `accounts` SET Verification = 2 WHERE Account_ID = $id";
     $statement = $connection->prepare($sqlQuery);

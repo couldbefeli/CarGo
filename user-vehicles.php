@@ -125,7 +125,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                         style=" max-width: 14rem;" width="100" height="140">
                                 </div>
                                 <div class="card-body">
-                                    <h5><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h5>
+                                    <h5><?php echo $row['Model_Name'] ?></h5>
                                     <div class="d-flex flex-column">
                                         <div class="d-flex mb-3 text-body-tertiary">
                                             <div class="me-4"><i class="bi bi-car-front-fill"></i>
@@ -151,7 +151,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title"><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h5>
+                                        <h5 class="modal-title"><?php echo $row['Model_Name'] ?></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>

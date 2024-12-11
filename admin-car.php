@@ -150,7 +150,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                             <img src="img/cars/<?php echo $row['Car_Image'] ?>" class="card-img-top" alt="..." width="100" height="100">
                         </div>
                         <div class="card-body">
-                            <h6 class="card-title"><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h6>
+                            <h6 class="card-title"><?php echo $row['Model_Name'] ?></h6>
                             <div class="d-flex justify-content-between">
                                 <!-- Delete Button -->
                                 <button class="btn btn-sm btn-danger w-100 me-2" data-bs-toggle="modal"
@@ -165,7 +165,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Are you sure you want to delete <b><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></b>?</p>
+                                                <p>Are you sure you want to delete <b><?php echo $row['Model_Name'] ?></b>?</p>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -189,7 +189,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                             <form action="admin-update-car-logic.php" method="POST">
 
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title"><?php echo $row['Brand'] . " " . $row['Model_Name'] ?></h5>
+                                                    <h5 class="modal-title"><?php echo $row['Model_Name'] ?></h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">

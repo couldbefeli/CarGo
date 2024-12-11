@@ -71,7 +71,7 @@ if (isset($_SESSION['error'])) {
                             <div class="mb-3 d-flex col">
                                 <div class="w-100">
                                     <label for="firstname" class="form-label">First name</label>
-                                    <input type="text" class="form-control" id="firstname" name="firstname">
+                                    <input type="text" class="form-control" id="firstname" name="firstname" required>
                                 </div>
                             </div>
 
@@ -79,7 +79,7 @@ if (isset($_SESSION['error'])) {
                             <div class="mb-3 d-flex col">
                                 <div class="w-100">
                                     <label for="lastname" class="form-label">Last name</label>
-                                    <input type="text" class="form-control" id="lastname" name="lastname">
+                                    <input type="text" class="form-control" id="lastname" name="lastname" required>
                                 </div>
                             </div>
 
@@ -87,7 +87,7 @@ if (isset($_SESSION['error'])) {
                             <div class="mb-3 d-flex col">
                                 <div class="w-100">
                                     <label for="contact" class="form-label">Contact Number</label>
-                                    <input type="number" class="form-control" id="contact" name="contact">
+                                    <input type="number" class="form-control" id="contact" name="contact" required>
                                 </div>
                             </div>
 
@@ -96,7 +96,7 @@ if (isset($_SESSION['error'])) {
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address" name="address">
+                                        <input type="text" class="form-control" id="address" name="address" required>
                                     </div>
                                 </div>
                             </div>
@@ -106,14 +106,14 @@ if (isset($_SESSION['error'])) {
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" id="email" name="email">
+                                        <input type="email" class="form-control" id="email" name="email" required>
                                     </div>
                                 </div>
 
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="id" class="form-label">Valid ID</label>
-                                        <input type="file" class="form-control" id="id" name="id">
+                                        <input type="file" class="form-control" id="id" name="id" required>
                                     </div>
                                 </div>
                             </div>
@@ -123,14 +123,14 @@ if (isset($_SESSION['error'])) {
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password">
+                                        <input type="password" class="form-control" id="password" name="password" required>
                                     </div>
                                 </div>
 
                                 <div class="mb-3 d-flex col">
                                     <div class="w-100">
                                         <label for="confirmpassword" class="form-label">Confirm Password</label>
-                                        <input type="password" class="form-control" id="confirmpassword" name="confirmPassword">
+                                        <input type="password" class="form-control" id="confirmpassword" name="confirmPassword" required>
                                     </div>
                                 </div>
                             </div>
@@ -203,6 +203,40 @@ if (isset($_SESSION['error'])) {
             </div>
         </div>
     </footer>
+
+    <script>
+    // function validateForm() {
+    //     const email = document.getElementById('email').value;
+    //     const password = document.getElementById('password').value;
+    //     const confirmPassword = document.getElementById('confirmPassword').value;
+    //     const errorContainer = document.getElementById('errorContainer');
+        
+    //     // Reset previous error messages
+    //     errorContainer.textContent = '';
+        
+    //     // Username validation
+    //     if (username.length < 4) {
+    //         errorContainer.textContent = 'Username must be at least 4 characters long';
+    //         return false;
+    //     }
+        
+    //     // Password complexity checks
+    //     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        
+    //     if (!passwordRegex.test(password)) {
+    //         errorContainer.textContent = 'Password must be at least 8 characters long and include: uppercase, lowercase, number, and special character';
+    //         return false;
+    //     }
+        
+    //     // Password match validation
+    //     if (password !== confirmPassword) {
+    //         errorContainer.textContent = 'Passwords do not match';
+    //         return false;
+    //     }
+        
+    //     return true;
+    // }
+    </script>
 
 </body>
 

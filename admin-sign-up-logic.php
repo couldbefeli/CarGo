@@ -21,38 +21,35 @@ if (isset($_POST['adminSignUpButton'])) {
     // Match passwords
     if ($password === $confirm_password) {
         // Hash the password
-        // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert into database
-        $SQL_ADD_USER_QUERY = "INSERT INTO accounts 
-                (First_Name, Last_Name, Address, Contact_Number, Email, Password, Verification, role) 
-                VALUES 
-                (:firstname, :lastname, :address, :contact_number, :email, :password, :verification, :role)";
+        $SQL_ADD_USER_QUERY = "CALL sp_add_account(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $sql_add = $connection->prepare($SQL_ADD_USER_QUERY);
-
-        try {
-            $sql_add->execute([
-                ':firstname' => $firstname,
-                ':lastname' => $lastname,
-                ':address' => $address,
-                ':contact_number' => $contact,
-                ':email' => $email,
-                ':password' => $password,
-                ':verification' => 1,
-                ':role' => 'admin',
-            ]);
-
-            // Redirect to sign-in page
+        $sql_add->bindValue(1, $firstname, PDO::PARAM_STR);
+        $sql_add->bindValue(2, $lastname, PDO::PARAM_STR);
+        $sql_add->bindValue(3, $address, PDO::PARAM_STR);
+        $sql_add->bindValue(4, $contact, PDO::PARAM_STR);
+        $sql_add->bindValue(5, $email, PDO::PARAM_STR);
+        $sql_add->bindValue(6, $hashed_password, PDO::PARAM_STR);
+        $sql_add->bindValue(7, "n/a", PDO::PARAM_STR);
+        $sql_add->bindValue(8, $address, PDO::PARAM_STR);
+        $sql_add->bindValue(9, 1, PDO::PARAM_INT);
+        $sql_add->bindValue(10, "admin", PDO::PARAM_STR);
+        if ($sql_add->execute()) {
+            $_SESSION['success'] = "Registration successful! Please wait for account verification.";
             header('Location: admin-sign-in.php');
             exit();
-        } catch (PDOException $e) {
-            $_SESSION['error'] = "Database error: " . $e->getMessage();
+        } else {
+            $_SESSION['error'] = "Failed to register user.";
             header('location: admin-sign-up.php');
             exit();
+        }
+        
         }
     } else {
         $_SESSION['error'] = "Passwords do not match.";
         header('location: admin-sign-up.php');
         exit();
     }
-}
+

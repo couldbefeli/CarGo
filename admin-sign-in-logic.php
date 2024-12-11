@@ -33,7 +33,7 @@ if (isset($_POST['adminSignInButton'])) {
         
         // Check verification and password
         if ($user['Verification'] === 1) {
-            if ($password === $user['Password']) {
+            if (password_verify($password, $user['Password'])) {
                 // Set the session variables
                 $_SESSION['admin_email'] = $user['Email'];
                 $_SESSION['admin_id'] = $user['Account_ID'];
