@@ -9,6 +9,13 @@ if (isset($_SESSION['error'])) {
     </script>';
     unset($_SESSION['error']); // Clear the error message after displaying it
 }
+if (isset($_SESSION['user_success'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['user_success'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['user_success']); // Clear the error message after displaying it
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

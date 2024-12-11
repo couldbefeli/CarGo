@@ -2,9 +2,20 @@
 
 session_start();
 require 'connection.php';
+
 if (!isset($_SESSION['email'])) {
     header('Location: user-sign-in.php');
 }
+
+if (isset($_SESSION['user_error'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['user_error'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['user_error']); // Clear the error message after displaying it
+}
+
+
 $sqlQuery = "SELECT * FROM `accounts` WHERE Account_ID = {$_SESSION['user_id']}";
 $statement = $connection->prepare($sqlQuery);
 $statement->execute();
@@ -121,20 +132,20 @@ $user = $statement->fetch(PDO::FETCH_ASSOC);
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-sub="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form action="user-update-password-logic.php" method="POST">
                             <div class="mb-3">
                                 <sub for="currentPassword" class="form-sub text-body-tertiary">Current Password</sub>
-                                <input type="password" class="form-control" id="currentPassword" required>
+                                <input type="password" class="form-control" id="currentPassword" name="userCurrentPassword" required>
                             </div>
                             <div class="mb-3">
                                 <sub for="newPassword" class="form-sub text-body-tertiary">New Password</sub>
-                                <input type="password" class="form-control" id="newPassword" required>
+                                <input type="password" class="form-control" id="newPassword" name="userNewPassword" required>
                             </div>
                             <div class="mb-3">
                                 <sub for="confirmPassword" class="form-sub text-body-tertiary">Confirm New Password</sub>
-                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <input type="password" class="form-control" id="confirmPassword" name="userConfirmPassword" required>
                             </div>
-                            <button type="submit" class="btn btn-success">Update Password</button>
+                            <button type="submit" class="btn btn-success" name="userUpdatePasswordButton">Update Password</button>
                         </form>
                     </div>
                 </div>
