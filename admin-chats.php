@@ -14,6 +14,8 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 // Check if a specific sender is selected
 $currentChatUserId = isset($_GET['sender_id']) ? intval($_GET['sender_id']) : null;
+$currentChatUserFirstName = isset($_GET['fn']) ? $_GET['fn'] : null;
+$currentChatUserLastName = isset($_GET['ln']) ? $_GET['ln'] : null;
 
 // Fetch messages for the selected user - Modified to show messages for all admins
 $chatMessages = [];
@@ -193,10 +195,17 @@ if ($currentChatUserId) {
             <div class="container text-success">
                 <?php foreach ($result as $row): ?>
                     <?php if ($row['role'] === 'user'): ?>
-                        <a class="btn m-0 p-0 py-2 mb-2" href="admin-chats.php?sender_id=<?php echo $row['Account_ID'] ?>" data-user-id="<?php echo $row['Account_ID'] ?>">
+                        <a class="btn m-0 p-0 py-2 mb-2 <?php if (isset($_GET['fn'])):
+                                                            echo ($row['First_Name'] === $_GET['fn'] ? "bg-success text-white" : "");
+                                                        endif;
+                                                        ?>"
+                            href="admin-chats.php?sender_id=<?php echo $row['Account_ID'] ?>&fn=<?php echo $row['First_Name'] ?>&ln=<?php echo $row['Last_Name'] ?>" data-user-id="<?php echo $row['Account_ID'] ?>">
                             <div class="container-fluid d-flex text-success  w-100 align-items-center">
                                 <img src="img/avatar.png" alt="" width="34" class=" me-2 rounded-circle">
-                                <small class="m-0 "><?php echo $row['First_Name'] . " " . $row['Last_Name'] ?></small>
+                                <small class="m-0 <?php if (isset($_GET['fn'])):
+                                                            echo ($row['First_Name'] === $_GET['fn'] ? "bg-success text-white" : "");
+                                                        endif;
+                                                        ?>"><?php echo $row['First_Name'] . " " . $row['Last_Name'] ?></small>
                             </div>
                         </a>
                     <?php endif; ?>
@@ -208,8 +217,11 @@ if ($currentChatUserId) {
 
     <div class="content">
         <div class="col-12 col-md-9 col-lg-10 d-flex flex-column p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="text-start">Chats</h3>
+            
 
-            <h3 class="text-start">Chats</h3>
+            </div>
             <div class="container d-flex flex-column bg-light p-0"
                 style="max-width: 100%; height: 75vh; border: 1px solid #ddd; border-radius: 8px;">
 
