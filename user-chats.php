@@ -151,6 +151,7 @@ try {
                         <div class="p-3 border-top">
                             <div class="input-group">
                                 <input type="text" minlength="1" class="form-control" name="message-content" placeholder='Aa' aria-label="Type a message">
+                                <input type="hidden" value="<?php echo $_SESSION['admin_id'] ?? $admin['Account_ID'] ?>" name="hiddenAdminID">
                                 <button class="btn btn-success" type="submit"><i class="bi bi-send-fill"></i></button>
                             </div>
                         </div>
