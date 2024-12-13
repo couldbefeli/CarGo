@@ -6,10 +6,11 @@ if (!isset($_SESSION['admin_email'])) {
 }
 
 // Fetch verified user accounts
-$sqlQuery = "SELECT * FROM `accounts` WHERE Verification = 1";
+$sqlQuery = "SELECT * FROM `v_all_verified_users`";
 $statement = $connection->prepare($sqlQuery);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 
 // Check if a specific sender is selected
 $currentChatUserId = isset($_GET['sender_id']) ? intval($_GET['sender_id']) : null;
@@ -17,24 +18,10 @@ $currentChatUserId = isset($_GET['sender_id']) ? intval($_GET['sender_id']) : nu
 // Fetch messages for the selected user - Modified to show messages for all admins
 $chatMessages = [];
 if ($currentChatUserId) {
-    $sqlQuery = "SELECT m.*, 
-                 a1.First_Name as sender_firstname, 
-                 a1.Last_Name as sender_lastname,
-                 a2.First_Name as receiver_firstname,
-                 a2.Last_Name as receiver_lastname
-                 FROM messages m
-                 JOIN accounts a1 ON m.sender_id = a1.Account_ID
-                 JOIN accounts a2 ON m.receiver_id = a2.Account_ID
-                 WHERE (sender_id = :sender AND receiver_id IN 
-                       (SELECT Account_ID FROM accounts WHERE Role = 'admin'))
-                    OR (sender_id IN 
-                       (SELECT Account_ID FROM accounts WHERE Role = 'admin')
-                       AND receiver_id = :sender)
-                 ORDER BY sent_at";
+    $sqlQuery = "CALL GetAdminUserMessages(?)";
     $statement = $connection->prepare($sqlQuery);
-    $statement->execute([
-        ':sender' => $currentChatUserId
-    ]);
+    $statement->bindValue(1, $currentChatUserId, PDO::PARAM_INT);
+    $statement->execute();
     $chatMessages = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 

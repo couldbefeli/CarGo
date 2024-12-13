@@ -15,28 +15,13 @@ if (!isset($_GET['sender_id'])) {
 }
 
 try {
-    // Modified query to get messages sent to any admin
-    $query = "SELECT m.*, 
-                     a1.Email as sender_email,
-                     a2.Email as receiver_email
-              FROM messages m
-              JOIN accounts a1 ON m.sender_id = a1.Account_ID
-              JOIN accounts a2 ON m.receiver_id = a2.Account_ID
-              WHERE (sender_id = :sender AND receiver_id IN 
-                    (SELECT Account_ID FROM accounts WHERE Role = 'admin'))
-                 OR (sender_id IN 
-                    (SELECT Account_ID FROM accounts WHERE Role = 'admin')
-                    AND receiver_id = :sender)
-              ORDER BY sent_at DESC 
-              LIMIT 50";
-
+    $query = "CALL sp_GetRecentAdminUserMessages(?)"; 
     $stmt = $connection->prepare($query);
-    $stmt->execute([
-        ':sender' => $_GET['sender_id']
-    ]);
-
-    $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($messages);
+    $stmt->bindValue(1, $_GET['sender_id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($result); 
 } catch (PDOException $e) {
     echo json_encode(['error' => 'Database error']);
 }
+?>

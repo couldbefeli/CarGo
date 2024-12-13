@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
 }
 
 
-$sqlCarType = "SELECT type_name, brand_name FROM `car_type`, `car_brand` WHERE car_type.type_id = car_brand.brand_id";
+$sqlCarType = "SELECT * FROM `car_type`, `car_brand` WHERE car_type.type_id = car_brand.brand_id";
 $statement = $connection->prepare($sqlCarType);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -199,9 +199,9 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                                                 <select class="form-select" name="brand">
                                                                     <option value="" disabled>Brand</option>
                                                                     <?php foreach ($result as $rows):
-                                                                        $selected = ($rows['brand_name'] === $row['Brand']) ? 'selected' : '';
+                                                                        $selected = ($rows['brand_id'] === $row['brand_id']) ? 'selected' : '';
                                                                     ?>
-                                                                        <option value="<?php echo $rows['brand_name'] ?>" <?php echo $selected; ?>>
+                                                                        <option value="<?php echo $rows['brand_id'] ?>" <?php echo $selected; ?>>
                                                                             <?php echo htmlspecialchars($rows['brand_name']); ?>
                                                                         </option>
                                                                     <?php endforeach; ?>
@@ -222,9 +222,9 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                                                 <select class="form-select" name="type">
                                                                     <option disabled>Car Type</option>
                                                                     <?php foreach ($result as $rows):
-                                                                        $selected = ($rows['type_name'] === $row['Car_Type']) ? 'selected' : '';
+                                                                        $selected = ($rows['type_id'] === $row['type_id']) ? 'selected' : '';
                                                                     ?>
-                                                                        <option value="<?php echo $rows['type_name'] ?>" <?php echo $selected; ?>>
+                                                                        <option value="<?php echo $rows['type_id'] ?>" <?php echo $selected; ?>>
                                                                             <?php echo htmlspecialchars($rows['type_name']); ?>
                                                                         </option>
                                                                     <?php endforeach; ?>
@@ -353,7 +353,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
 
                                         <?php foreach ($result as $row): ?>
 
-                                            <option value="<?php echo $row['brand_name'] ?>"><?php echo $row['brand_name'] ?></option>
+                                            <option value="<?php echo $row['brand_id'] ?>"><?php echo $row['brand_name'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -376,7 +376,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                         <option value="" selected disabled>Type</option>
                                         <?php foreach ($result as $row): ?>
 
-                                            <option value="<?php echo $row['type_name'] ?>"><?php echo $row['type_name'] ?></option>
+                                            <option value="<?php echo $row['type_id'] ?>"><?php echo $row['type_name'] ?></option>
                                         <?php endforeach; ?>
 
                                     </select>

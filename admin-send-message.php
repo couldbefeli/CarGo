@@ -15,16 +15,15 @@ if (!isset($_POST['receiver_id']) || !isset($_POST['message'])) {
 }
 
 try {
-    $query = "INSERT INTO messages (sender_id, receiver_id, content, sent_at, role) 
-              VALUES (:sender, :receiver, :content, NOW(), 'admin')";
+    $query = "CALL sp_admin_send_message(?, ?, ?)"; 
     $stmt = $connection->prepare($query);
-    $stmt->execute([
-        ':sender' => $_SESSION['admin_id'],
-        ':receiver' => $_POST['receiver_id'],
-        ':content' => trim($_POST['message'])
-    ]);
+    $stmt->bindValue(1, $_SESSION['admin_id'], PDO::PARAM_INT);
+    $stmt->bindValue(2, $_POST['receiver_id'], PDO::PARAM_INT);
+    $stmt->bindValue(3, trim($_POST['message']), PDO::PARAM_STR); // Changed to PARAM_STR
+    $stmt->execute();
 
-    echo json_encode(['success' => true]);
+    echo json_encode(['success' => true]); 
 } catch (PDOException $e) {
-    echo json_encode(['error' => 'Database error']);
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]); 
 }
+?>

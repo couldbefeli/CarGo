@@ -42,7 +42,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
     </style>
 </head>
 
-<body>
+<body class="overflow-x-hidden">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="img/cargo-logo-assets/CarGo-Large.png" alt=""></a>
@@ -74,47 +74,19 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
     </nav>
-
-    <main class="container">
-        <div class="row">
-            <aside class="col-12 col-md-3 col-lg-2 bg-body-tertiary p-3 vh-100">
-                <div class="d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4>Filter</h4>
-                        <a href="#" class="text-success">Reset</a>
-                    </div>
-                    <div class="d-flex flex-column p-3 bg-body-secondary border-0 rounded mb-4">
-                        <h5>Types</h5>
-                        <div class="d-flex flex-wrap " style="gap: .5rem;">
-                            <?php foreach ($result2 as $row): ?>
-
-                                <div class="form-check">
-
-                                    <input class="form-check-input" type="checkbox" value="<?php echo $row['type_name'] ?>" id="<?php echo $row['type_name'] ?>">
-                                    <label class="form-check-label" for="<?php echo $row['type_name'] ?>"><?php echo $row['type_name'] ?></label>
+    <div class="vh-100 vw-100 border position-relative">
+        <img src="img/car-forest.jpg" alt="" class="w-100 h-100 object-fit-cover bg-white" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));">
+        <div class="position-absolute bottom-50 end-50 ">
+            <h1 class="text-dark opacity-75" style="font-size: 6rem; ">Reserve a car. </h1>
+            <a href="#reserve-section"><button class="btn btn-dark opacity-50">Get Started</button></a>
+        </div>
 
 
-                                </div>
-                            <?php endforeach; ?>
+    </div>
+    <p class="vw-100 text-center display-3 fw-bold p-5 bg-body-tertiary" style="font-size: 3.2rem" id="reserve-section">Start Riding</p>
+    <main class="container ">
 
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column p-3 bg-body-secondary border-0 rounded mb-4">
-                        <h5>Brand</h5>
-                        <div class="d-flex flex-wrap" style="gap: .5rem;">
-                            <?php foreach ($result2 as $row): ?>
-
-                                <input type="checkbox" class="btn-check" id="<?php echo $row['brand_name'] ?>" >
-                                <label class="btn btn-outline-success btn-sm" for="<?php echo $row['brand_name'] ?>"><?php echo $row['brand_name'] ?></label>
-                            <?php endforeach; ?>
-
-                        </div>
-                    </div>
-
-
-                </div>
-            </aside>
-
+        <div class="row vh-100">
             <div class="col-12 col-md-9 col-lg-10 p-3">
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-9 g-3">
                     <?php foreach ($result as $row): ?>
@@ -155,48 +127,49 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
+                                    <form action="user-reserve-vehicle.php" method="POST">
 
-                                        <div class="bg-body-secondary px-4 py-5">
-                                            <div class="d-flex justify-content-center ">
-                                                <img src="img/cars/<?php echo $row['Car_Image'] ?>" alt="" class="w-100">
+                                        <div class="modal-body">
+
+                                            <div class="bg-body-secondary px-4 py-5">
+                                                <div class="d-flex justify-content-center ">
+                                                    <img src="img/cars/<?php echo $row['Car_Image'] ?>" alt="" class="w-100">
+                                                </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h4 class="mt-2">Rent Date</h4>
-                                            <h6 class="mt-2 text-end">
-                                                <small><?php echo $row['Price'] ?></small>
-                                                <caption>/day</caption>
-                                            </h6>
-                                        </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h4 class="mt-2">Rent Date</h4>
+                                                <h6 class="mt-2 text-end">
+                                                    <small><?php echo $row['Price'] ?></small>
+                                                    <caption>/day</caption>
+                                                </h6>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                    <div class="col">
+                                                        <label for="rentFromDate" class="form-label text-body-tertiary">Pickup Date</label>
+                                                        <input type="date" class="form-control" id="pickupDate"
+                                                            placeholder="name@example.com">
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="rentToDate" class="form-label text-body-tertiary">Return Date</label>
+                                                        <input type="date" class="form-control" id="returnDate"
+                                                            placeholder="name@example.com">
+                                                    </div>
 
 
-                                        <div class="mb-3">
-                                            <form action="" class="row">
-                                                <div class="col">
-                                                    <label for="rentFromDate" class="form-label text-body-tertiary">Pickup Date</label>
-                                                    <input type="date" class="form-control" id="pickupDate"
-                                                        placeholder="name@example.com">
-                                                </div>
-
-                                                <div class="col">
-                                                    <label for="rentToDate" class="form-label text-body-tertiary">Return Date</label>
-                                                    <input type="date" class="form-control" id="returnDate"
-                                                        placeholder="name@example.com">
-                                                </div>
-
-                                            </form>
+                                            </div>
 
                                         </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-success">Reserve</button>
-                                    </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <input type="hidden" value="<?php echo $row['Car_ID'] ?>" name="Car_ID">
+                                            <button type="submit" class="btn btn-success" name="reserveButton">Reserve</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
