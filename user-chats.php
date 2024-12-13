@@ -2,14 +2,26 @@
 
 session_start();
 require 'connection.php';
-if (!isset ($_SESSION['email'])) {
+if (!isset($_SESSION['email'])) {
     header('Location: user-sign-in.php');
 }
 
 $sqlQuery = "SELECT * FROM `messages` WHERE messages.sender_id = {$_SESSION['user_id']} OR messages.receiver_id = {$_SESSION['user_id']} ORDER BY messages.sent_at DESC";
 $statement = $connection->prepare($sqlQuery);
 $statement->execute();
-$chats = $statement->fetchAll(PDO::FETCH_ASSOC);
+$chats = $statement->fetchAll(PDO::FETCH_OBJ);
+$admin = [];
+
+try {
+    if (!isset($_SESSION['admin_id'])) {
+        $sql = "SELECT * FROM accounts WHERE role = 'admin'";
+        $stmt = $connection->prepare($sql);
+        $stmt->execute();
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+} catch (Error $e) {
+    echo $e;
+}
 
 
 ?>
@@ -81,30 +93,58 @@ $chats = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <div class="container d-flex flex-column bg-light p-0" style="max-width: 100%; height: 75vh; border: 1px solid #ddd; border-radius: 8px;">
 
                     <div id="chat-content" class="flex-grow-1 p-3 overflow-auto d-flex flex-column-reverse">
-
-                        <?php foreach ($chats as $chat) {
-                            if ($chat['sender_id'] === $_SESSION['user_id']) {
-                        ?>
-                                <!-- Chat Sent -->
-                                <div class="d-flex justify-content-end mb-3">
-                                    <div class="p-3 bg-success text-white rounded-3" style="max-width: 75%;">
-                                        <p class="mb-0"><?php echo $chat['content'] ?></p>
-                                        <small class="text-white-50"><?php echo date('h:i A', strtotime($chat['sent_at'])) ?></small>
+                        <?php if (isset($_SESSION['admin_id'])): ?>
+                            <?php foreach ($chats as $chat) {
+                                if ($chat->sender_id === $_SESSION['user_id']) {
+                            ?>
+                                    <!-- Chat Sent -->
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <div class="p-3 bg-success text-white rounded-3" style="max-width: 75%;">
+                                            <p class="mb-0"><?php echo $chat->content ?></p>
+                                            <small class="text-white-50"><?php echo date('h:i A', strtotime($chat->sent_at)) ?></small>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php } ?>
+                                <?php } ?>
 
-                        <!-- Chat Received -->
+                                <!-- Chat Received -->
+
+                                <?php if ($chat->sender_id !== $_SESSION['user_id']) { ?>
+                                    <div class="d-flex mb-3">
+                                        <div class="p-3 bg-body-secondary rounded-3" style="max-width: 75%;">
+                                            <p class="mb-0"><?php echo $chat->content ?></p>
+                                            <small class="text-muted"><?php echo date('h:i A', strtotime($chat->sent_at)) ?></small>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+                        <?php endif; ?>
+
+                        <?php if (!isset($_SESSION['admin_id'])): ?>
+                            <?php foreach ($chats as $chat) {
+                                if ($chat->sender_id === $_SESSION['user_id']) {
+                            ?>
+                                    <!-- Chat Sent -->
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <div class="p-3 bg-success text-white rounded-3" style="max-width: 75%;">
+                                            <p class="mb-0"><?php echo $chat->content ?></p>
+                                            <small class="text-white-50"><?php echo date('h:i A', strtotime($chat->sent_at)) ?></small>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+
+                                <!-- Chat Received -->
+
+                                <?php if ($chat->role == $admin['role']) { ?>
+                                    <div class="d-flex mb-3">
+                                        <div class="p-3 bg-body-secondary rounded-3" style="max-width: 75%;">
+                                            <p class="mb-0"><?php echo $chat->content ?></p>
+                                            <small class="text-muted"><?php echo date('h:i A', strtotime($chat->sent_at)) ?></small>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+                        <?php endif; ?>
                         
-                        <?php if ($chat['sender_id'] !== $_SESSION['user_id']) { ?>
-                        <div class="d-flex mb-3">
-                            <div class="p-3 bg-body-secondary rounded-3" style="max-width: 75%;">
-                                <p class="mb-0"><?php echo $chat['content'] ?></p>
-                                <small class="text-muted"><?php echo date('h:i A', strtotime($chat['sent_at'])) ?></small>
-                            </div>
-                        </div>
-                        <?php }?>
-                        <?php } ?>
 
                     </div>
                     <form action="user-chats-logic.php" method="POST">

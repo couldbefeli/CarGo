@@ -24,15 +24,22 @@ if (isset($_POST["userSigninButton"])) {
         $isPasswordValid = password_verify($password, $user['Password']);
         error_log("Password verification result: " . ($isPasswordValid ? "true" : "false"));
 
-        if ($user['Verification'] === 0) {
+        if ($user['role'] === "admin") {
+            $_SESSION['error'] = "You are admin. Please log in in your respective sign in page. You are being redirected to admin sign in. Thank you.";
+            header("Location: admin-sign-in.php");
+            exit();
+        } 
+
+        else if ($user['Verification'] === 0) {
             $_SESSION['error'] = "Your Profile is in verification process.";
             header("Location: user-sign-in.php");
             exit();
         } 
         
-        if ($user['Verification'] === 1 && $isPasswordValid) {
+        else if ($user['Verification'] === 1 && $isPasswordValid) {
             $_SESSION['email'] = $user['Email'];
             $_SESSION['user_id'] = $user['Account_ID'];
+            $_SESSION['user_role'] = $user['role'];
             header('Location: index.php');
             exit();
         } else {

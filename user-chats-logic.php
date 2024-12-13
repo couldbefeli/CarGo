@@ -5,15 +5,15 @@ require 'connection.php';
 
 $messageContent = $_POST['message-content'];
 
-$sqlQuery = "INSERT INTO `messages` (sender_id, receiver_id, content, is_read) VALUES
-(:sender_id, :receiver_id, :content, :is_read)";
+$sqlQuery = "INSERT INTO `messages` (sender_id, receiver_id, content, role) VALUES
+(:sender_id, :receiver_id, :content, :role)";
 
 $statement = $connection->prepare($sqlQuery);
 $statement->execute([
     ':sender_id' => $_SESSION['user_id'],
-    ':receiver_id' => 4,
+    ':receiver_id' => $_SESSION['admin_id'],
     ':content' => $messageContent,
-    ':is_read' => 0,
+    ':role' => $_SESSION['user_role'],
 
 ]);
 

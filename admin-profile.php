@@ -170,7 +170,7 @@ $user = $statement->fetch(PDO::FETCH_ASSOC);
                 <img src="img/avatar.png" class="me-3" width="40" height="40">
                 <div class=" d-flex flex-column justify-content-center">
                     <small class="text-secondary">Welcome back <span>👋</span></small>
-                    <p class="text-dark m-0 fw-bold">Admin01</p>
+                    <p class="text-dark m-0 fw-bold"><?php echo $_SESSION['admin_firstName'] ?></p>
                 </div>
             </div>
         </div>

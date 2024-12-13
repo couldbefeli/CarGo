@@ -37,6 +37,8 @@ if (isset($_POST['adminSignInButton'])) {
                 // Set the session variables
                 $_SESSION['admin_email'] = $user['Email'];
                 $_SESSION['admin_id'] = $user['Account_ID'];
+                $_SESSION['admin_firstName'] = $user['First_Name'];
+                $_SESSION['admin_role'] = $user['role'];
 
                 // Redirect to the homepage or dashboard
                 header('Location: admin-analytics.php');

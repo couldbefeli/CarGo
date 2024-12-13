@@ -1,15 +1,43 @@
 <?php
-
 session_start();
 require 'connection.php';
-if(!isset ($_SESSION['admin_email'])) {
+if (!isset($_SESSION['admin_email'])) {
     header('Location: admin-sign-in.php');
 }
 
+// Fetch verified user accounts
 $sqlQuery = "SELECT * FROM `accounts` WHERE Verification = 1";
 $statement = $connection->prepare($sqlQuery);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+// Check if a specific sender is selected
+$currentChatUserId = isset($_GET['sender_id']) ? intval($_GET['sender_id']) : null;
+
+// Fetch messages for the selected user - Modified to show messages for all admins
+$chatMessages = [];
+if ($currentChatUserId) {
+    $sqlQuery = "SELECT m.*, 
+                 a1.First_Name as sender_firstname, 
+                 a1.Last_Name as sender_lastname,
+                 a2.First_Name as receiver_firstname,
+                 a2.Last_Name as receiver_lastname
+                 FROM messages m
+                 JOIN accounts a1 ON m.sender_id = a1.Account_ID
+                 JOIN accounts a2 ON m.receiver_id = a2.Account_ID
+                 WHERE (sender_id = :sender AND receiver_id IN 
+                       (SELECT Account_ID FROM accounts WHERE Role = 'admin'))
+                    OR (sender_id IN 
+                       (SELECT Account_ID FROM accounts WHERE Role = 'admin')
+                       AND receiver_id = :sender)
+                 ORDER BY sent_at";
+    $statement = $connection->prepare($sqlQuery);
+    $statement->execute([
+        ':sender' => $currentChatUserId
+    ]);
+    $chatMessages = $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 ?>
 
@@ -27,6 +55,7 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             display: flex;
@@ -165,7 +194,7 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <img src="img/avatar.png" class="me-3" width="40" height="40">
                 <div class=" d-flex flex-column justify-content-center">
                     <small class="text-secondary">Welcome back <span>👋</span></small>
-                    <p class="text-dark m-0 fw-bold">Admin01</p>
+                    <p class="text-dark m-0 fw-bold"><?php echo $_SESSION['admin_firstName'] ?></p>
                 </div>
             </div>
         </div>
@@ -175,18 +204,19 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
     <div class="sidebar bg-white shadow-lg d-flex flex-column justify-content-between vh-100">
         <div>
             <div class="container text-success">
-                <div>
-                    <?php foreach ($result as $row): ?>
-                        <a class="btn m-0 p-0 py-2 mb-2">
+                <?php foreach ($result as $row): ?>
+                    <?php if ($row['role'] === 'user'): ?>
+                        <a class="btn m-0 p-0 py-2 mb-2" href="admin-chats.php?sender_id=<?php echo $row['Account_ID'] ?>" data-user-id="<?php echo $row['Account_ID'] ?>">
                             <div class="container-fluid d-flex text-success  w-100 align-items-center">
                                 <img src="img/avatar.png" alt="" width="34" class=" me-2 rounded-circle">
                                 <small class="m-0 "><?php echo $row['First_Name'] . " " . $row['Last_Name'] ?></small>
                             </div>
                         </a>
-                    <?php endforeach; ?>
-                </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="content">
@@ -197,42 +227,137 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                 style="max-width: 100%; height: 75vh; border: 1px solid #ddd; border-radius: 8px;">
 
                 <div id="chat-content" class="flex-grow-1 p-3 overflow-auto d-flex flex-column-reverse">
-                    <!-- Chat Sent -->
-                    <div class="d-flex justify-content-end mb-3">
-                        <div class="p-3 bg-success text-white rounded-3" style="max-width: 75%;">
-                            <p class="mb-0">I'm good, thank you! How about you?</p>
-                            <small class="text-white-50">12:01 PM</small>
-                        </div>
-                    </div>
-
-                    <!-- Chat Received -->
-                    <div class="d-flex mb-3">
-                        <div class="p-3 bg-body-secondary rounded-3" style="max-width: 75%;">
-                            <p class="mb-0">Hello! How are you doing?</p>
-                            <small class="text-muted">12:00 PM</small>
-                        </div>
-                    </div>
-
-
+                    <?php if ($currentChatUserId): ?>
+                        <?php foreach (array_reverse($chatMessages) as $message): ?>
+                            <div class="d-flex 
+                                <?php echo $message['role'] == $_SESSION['admin_role'] ? 'justify-content-end' : 'justify-content-start'; ?> 
+                                mb-3">
+                                <div class="p-3 
+                                    <?php echo $message['role'] == $_SESSION['admin_role'] ? 'bg-success text-white' : 'bg-body-secondary'; ?> 
+                                    rounded-3"
+                                    style="max-width: 75%;">
+                                    <p class="mb-0"><?php echo htmlspecialchars($message['content']); ?></p>
+                                    <small class="
+                                        <?php echo $message['role'] == $_SESSION['admin_role'] ? 'text-white-50' : 'text-muted'; ?>">
+                                        <?php echo date('h:i A', strtotime($message['sent_at'])); ?>
+                                    </small>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
-                <form action="">
-                    <div class="p-3 border-top">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder='Aa' aria-label="Type a message">
-                            <button class="btn btn-success" type="button"><i class="bi bi-send-fill"></i></button>
+
+                <?php if ($currentChatUserId): ?>
+                    <form id="message-form" action="" method="POST">
+                        <div class="p-3 border-top">
+                            <div class="input-group">
+                                <input type="text" id="message-input" class="form-control" placeholder='Aa' aria-label="Type a message" required>
+                                <input type="hidden" id="receiver-id" value="<?php echo $currentChatUserId; ?>">
+                                <button class="btn btn-success" type="submit"><i class="bi bi-send-fill"></i></button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                <?php endif; ?>
 
             </div>
         </div>
 
     </div>
 
-    </div>
-
     <script>
+        $(document).ready(function() {
+            // Message sending
+            $('#message-form').on('submit', function(e) {
+                e.preventDefault();
 
+                var message = $('#message-input').val().trim();
+                var receiverId = $('#receiver-id').val();
+
+                if (!message) return;
+
+                $.ajax({
+                    url: 'admin-send-message.php',
+                    method: 'POST',
+                    data: {
+                        receiver_id: receiverId,
+                        message: message
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        // Immediately fetch and display messages after sending
+                        loadChatMessages(receiverId);
+                        $('#message-input').val('');
+                        window.location.reload();
+                    },
+                    error: function() {
+                        alert('Failed to send message');
+                    }
+                });
+            });
+
+            // Function to load chat messages
+            function loadChatMessages(senderId) {
+                if (!senderId) return;
+
+                $.ajax({
+                    url: 'admin-fetch-message.php',
+                    method: 'GET',
+                    data: {
+                        sender_id: senderId
+                    },
+                    dataType: 'json',
+                    success: function(messages) {
+                        var chatContent = $('#chat-content');
+                        chatContent.empty();
+
+                        messages.reverse().forEach(function(message) {
+                            var isAdmin = message.sender_id != senderId;
+                            var messageHtml = `
+                    <div class="d-flex ${isAdmin ? 'justify-content-end' : 'justify-content-start'} mb-3">
+                        <div class="p-3 ${isAdmin ? 'bg-success text-white' : 'bg-body-secondary'} rounded-3" 
+                            style="max-width: 75%;">
+                            ${isAdmin ? '' : `<small class="text-muted">${message.sender_firstname}</small><br>`}
+                            <p class="mb-0">${escapeHtml(message.content)}</p>
+                            <small class="${isAdmin ? 'text-white-50' : 'text-muted'}">
+                                ${formatTime(message.sent_at)}
+                            </small>
+                        </div>
+                    </div>
+                `;
+                            chatContent.prepend(messageHtml);
+                        });
+                    },
+                    error: function() {
+                        console.error('Failed to load messages');
+                    }
+                });
+            }
+
+            // Utility functions
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            function formatTime(dateString) {
+                let date = new Date(dateString);
+                return date.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            // Auto-refresh messages every 5 seconds
+            <?php if ($currentChatUserId): ?>
+                setInterval(function() {
+                    loadChatMessages(<?php echo $currentChatUserId; ?>);
+                }, 5000);
+            <?php endif; ?>
+        });
     </script>
 </body>
 
