@@ -1,29 +1,45 @@
 <?php
-
 session_start();
+
 require 'connection.php';
+
+// Check if the user is logged in
 if (!isset($_SESSION['email'])) {
     header('Location: user-sign-in.php');
+    exit; // Exit after redirection
 }
 
-$sqlQuery = "CALL sp_GetMessagesByUserId(?)";
-$statement = $connection->prepare($sqlQuery);
-$statement->bindParam(1, $_SESSION['user_id'], PDO::PARAM_INT);
-$statement->execute();
-$chats = $statement->fetchAll(PDO::FETCH_OBJ);
-$admin = [];
+// Get user ID (assuming it's stored in $_SESSION['user_id'])
+$userId = $_SESSION['user_id']; 
 
+// Fetch user messages using stored procedure
 try {
-    if (!isset($_SESSION['admin_id'])) {
+    $stmt = $connection->prepare("CALL sp_GetMessagesByUserId(?)");
+    $stmt->bindParam(1, $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $chats = $stmt->fetchAll(PDO::FETCH_OBJ);
+} catch (PDOException $e) {
+    // Handle database errors gracefully
+    echo "Database Error: " . $e->getMessage();
+    exit; 
+}
+
+// Fetch admin information (if not already available)
+$admin = [];
+if (!isset($_SESSION['admin_id'])) {
+    try {
         $sql = "SELECT * FROM accounts WHERE role = 'admin'";
         $stmt = $connection->prepare($sql);
         $stmt->execute();
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC); 
+    } catch (PDOException $e) {
+        // Handle database errors gracefully
+        echo "Database Error: " . $e->getMessage();
+        exit; 
     }
-} catch (Error $e) {
-    echo $e;
 }
 
+// ... (Rest of your code to process $chats and $admin) ... 
 
 ?>
 

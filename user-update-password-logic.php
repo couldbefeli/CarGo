@@ -8,14 +8,13 @@ if (isset($_POST['userUpdatePasswordButton'])) {
     $userConfirmPassword = $_POST['userConfirmPassword'];
 
     // Fetch the current password
-    $sqlQuery = 'SELECT password FROM accounts WHERE Account_ID = :id';
+    $sqlQuery = 'SELECT Password FROM accounts WHERE Account_ID = :id';
     $statement = $connection->prepare($sqlQuery);
     $statement->execute([':id' => $_SESSION['user_id']]);
     $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-
     // Verify current password
-    if (!$user || $user['password'] !== $userCurrentPasswordInput) {
+    if (!password_verify($userCurrentPasswordInput, $user['Password'])) {
         $_SESSION['user_error'] = "Current password is incorrect.";
         header("Location: user-profile.php");
         exit();
@@ -28,15 +27,21 @@ if (isset($_POST['userUpdatePasswordButton'])) {
         exit();
     }
 
-    // Update password
-    $sqlQuery = 'UPDATE accounts SET password = :password WHERE Account_ID = :id';
-    $statement = $connection->prepare($sqlQuery);
-    $statement->execute([
-        ':password' => $userNewPassword,
+    // Update password with new prepared statement
+    $updateQuery = 'UPDATE accounts SET Password = :password WHERE Account_ID = :id';
+    $updateStatement = $connection->prepare($updateQuery);
+    $updateStatement->execute([
+        ':password' => password_hash($userNewPassword, PASSWORD_DEFAULT),
         ':id' => $_SESSION['user_id']
     ]);
 
-    $_SESSION['user_success'] = "Password updated successfully. Please sign in with your new password.";
-    header("Location: user-sign-in.php");
+    if ($updateStatement->rowCount() > 0) {
+        $_SESSION['user_success'] = "Password updated successfully. Please sign in with your new password.";
+        header("Location: user-sign-in.php");
+    } else {
+        $_SESSION['user_error'] = "Failed to update password. Please try again.";
+        header("Location: user-profile.php");
+    }
     exit();
 }
+?>
