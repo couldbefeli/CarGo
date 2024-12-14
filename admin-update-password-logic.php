@@ -14,12 +14,11 @@ if (isset($_POST['adminUpdatePasswordButton'])) {
         exit();
     }
 
-    // Fetch the current password using admin_id
+    // Fetch the current password
     $sqlQuery = 'CALL sp_select_account_password(?)';
     $statement = $connection->prepare($sqlQuery);
-    $statement->bindParam(1, $_SESSION['admin_id'], PDO::PARAM_INT); // Use admin_id, not password
+    $statement->bindParam(1, $_SESSION['admin_id'], PDO::PARAM_INT);
     $statement->execute();
-
     $user = $statement->fetch(PDO::FETCH_ASSOC);
 
     // Check if we got a valid result
