@@ -6,8 +6,9 @@ if (!isset($_SESSION['email'])) {
     header('Location: user-sign-in.php');
 }
 
-$sqlQuery = "SELECT * FROM `messages` WHERE messages.sender_id = {$_SESSION['user_id']} OR messages.receiver_id = {$_SESSION['user_id']} ORDER BY messages.sent_at DESC";
+$sqlQuery = "CALL sp_GetMessagesByUserId(?)";
 $statement = $connection->prepare($sqlQuery);
+$statement->bindParam(1, $_SESSION['user_id'], PDO::PARAM_INT);
 $statement->execute();
 $chats = $statement->fetchAll(PDO::FETCH_OBJ);
 $admin = [];

@@ -3,7 +3,7 @@
 session_start();
 require 'connection.php';
 
-$sqlCars = "SELECT * FROM `cars`";
+$sqlCars = "SELECT * FROM `cars` ORDER BY Model_Name ASC";
 $statement = $connection->prepare($sqlCars);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -78,7 +78,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
         <img src="img/car-forest.jpg" alt="" class="w-100 h-100 object-fit-cover bg-white" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));">
         <div class="position-absolute bottom-50 end-50 ">
             <h1 class="text-dark opacity-75" style="font-size: 6rem; ">Reserve a car. </h1>
-            <a href="#reserve-section"><button class="btn btn-dark opacity-50">Get Started</button></a>
+            <a href="#reserve-section"><button class="btn btn-dark fw-bold opacity-75">Get Started</button></a>
         </div>
 
 
@@ -90,34 +90,39 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
             <div class="col-12 col-md-9 col-lg-10 p-3">
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-9 g-3">
                     <?php foreach ($result as $row): ?>
+                        <?php if ($row['Car_Status'] === "available"): ?>
+
                         <div class="col">
-                            <div class="card">
-                                <div class="d-flex justify-content-center bg-body-secondary p-3">
-                                    <img src="img/cars/<?php echo $row['Car_Image'] ?>" class="card-img-top" alt="..."
-                                        style=" max-width: 14rem;" width="100" height="140">
-                                </div>
-                                <div class="card-body">
-                                    <h5><?php echo $row['Model_Name'] ?></h5>
-                                    <div class="d-flex flex-column">
-                                        <div class="d-flex mb-3 text-body-tertiary">
-                                            <div class="me-4"><i class="bi bi-car-front-fill"></i>
-                                                <caption><?php echo ucfirst($row['Transmission']) ?></caption>
+                            
+                                <div class="card">
+                                    <div class="d-flex justify-content-center bg-body-secondary p-3">
+                                        <img src="img/cars/<?php echo $row['Car_Image'] ?>" class="card-img-top" alt="..."
+                                            style=" max-width: 14rem;" width="100" height="140">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5><?php echo $row['Model_Name'] ?></h5>
+                                        <div class="d-flex flex-column">
+                                            <div class="d-flex mb-3 text-body-tertiary">
+                                                <div class="me-4"><i class="bi bi-car-front-fill"></i>
+                                                    <caption><?php echo ucfirst($row['Transmission']) ?></caption>
+                                                </div>
+                                                <div class="me-4"><i class="bi bi-person-fill"></i>
+                                                    <caption><?php echo $row['Capacity'] ?> Seater</caption>
+                                                </div>
+                                                <caption>₱<?php echo $row['Price'] ?></caption>
                                             </div>
-                                            <div class="me-4"><i class="bi bi-person-fill"></i>
-                                                <caption><?php echo $row['Capacity'] ?> Seater</caption>
-                                            </div>
-                                            <caption>₱<?php echo $row['Price'] ?></caption>
+                                            <button class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="<?php if (!isset($_SESSION['email'])) {
+                                                                    echo "#signInModal";
+                                                                } else if (isset($_SESSION['email'])) {
+                                                                    echo "#reserveCar-" . $row['Car_ID'];
+                                                                }  ?>">Reserve Now</button>
                                         </div>
-                                        <button class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="<?php if (!isset($_SESSION['email'])) {
-                                                                echo "#signInModal";
-                                                            } else if (isset($_SESSION['email'])) {
-                                                                echo "#reserveCar-" . $row['Car_ID'];
-                                                            }  ?>">Reserve Now</button>
                                     </div>
                                 </div>
-                            </div>
                         </div>
+                        <?php endif; ?>
+
                         <!-- modal for reserving a car SESSION EMAIL TRUE -->
                         <div class="modal fade" tabindex="-1" id="reserveCar-<?php echo $row['Car_ID'] ?>">
                             <div class="modal-dialog">
@@ -147,17 +152,17 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                             </div>
 
                                             <div class="mb-3">
-                                                    <div class="col">
-                                                        <label for="rentFromDate" class="form-label text-body-tertiary">Pickup Date</label>
-                                                        <input type="date" class="form-control" id="pickupDate"
-                                                            placeholder="name@example.com">
-                                                    </div>
+                                                <div class="col">
+                                                    <label for="rentFromDate" class="form-label text-body-tertiary">Pickup Date</label>
+                                                    <input type="date" class="form-control" id="pickupDate"
+                                                        placeholder="name@example.com">
+                                                </div>
 
-                                                    <div class="col">
-                                                        <label for="rentToDate" class="form-label text-body-tertiary">Return Date</label>
-                                                        <input type="date" class="form-control" id="returnDate"
-                                                            placeholder="name@example.com">
-                                                    </div>
+                                                <div class="col">
+                                                    <label for="rentToDate" class="form-label text-body-tertiary">Return Date</label>
+                                                    <input type="date" class="form-control" id="returnDate"
+                                                        placeholder="name@example.com">
+                                                </div>
 
 
                                             </div>
