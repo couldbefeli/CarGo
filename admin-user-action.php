@@ -6,8 +6,9 @@ if (isset($_POST['verifyButton'])) {
     $id = $_POST['id'];
 
     // admin verify
-    $sqlQuery = "UPDATE `accounts` SET Verification = 1 WHERE Account_ID = $id";
+    $sqlQuery = "CALL sp_admin_user_verify(?)";
     $statement = $connection->prepare($sqlQuery);
+    $statement->bindParam(1, $id, PDO::PARAM_INT);
     $statement->execute(); 
 
     header("Location: admin-user.php");
@@ -16,8 +17,9 @@ if (isset($_POST['verifyButton'])) {
 
     // admin block
     $id = $_POST['id'];
-    $sqlQuery = "UPDATE `accounts` SET Verification = 2 WHERE Account_ID = $id";
+    $sqlQuery = "CALL sp_admin_user_block(?)";
     $statement = $connection->prepare($sqlQuery);
+    $statement->bindParam(1, $id, PDO::PARAM_INT);
     $statement->execute(); 
 
     header("Location: admin-user.php");

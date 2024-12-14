@@ -7,12 +7,11 @@ if (isset($_POST['adminSignInButton'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $selectQuery = "SELECT * FROM `accounts` WHERE Email = :email";
+    $selectQuery = "CALL sp_account_sign_in(?)";
     $statement = $connection->prepare($selectQuery);
+    $statement->bindParam(1, $email, PDO::PARAM_STR);
 
-    $statement->execute([
-        ':email' => $email,
-    ]);
+    $statement->execute();
 
     if ($statement->rowCount() > 0) {
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -30,7 +29,7 @@ if (isset($_POST['adminSignInButton'])) {
             header("Location: user-sign-in.php");
             exit();
         }
-        
+        var_dump($user);
         // Check verification and password
         if ($user['Verification'] === 1) {
             if (password_verify($password, $user['Password'])) {
@@ -40,6 +39,7 @@ if (isset($_POST['adminSignInButton'])) {
                 $_SESSION['admin_firstName'] = $user['First_Name'];
                 $_SESSION['admin_role'] = $user['role'];
 
+                // var_dump($user);
                 // Redirect to the homepage or dashboard
                 header('Location: admin-analytics.php');
                 exit();

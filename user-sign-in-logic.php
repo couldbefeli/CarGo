@@ -6,12 +6,11 @@ if (isset($_POST["userSigninButton"])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $selectQuery = "SELECT * FROM `accounts` WHERE Email = :email";
+    $selectQuery = "CALL sp_account_sign_in(?)";
     $statement = $connection->prepare($selectQuery);
+    $statement->bindParam(1, $email, PDO::PARAM_STR);
 
-    $statement->execute([
-        ':email' => $email,
-    ]);
+    $statement->execute();
 
     if ($statement->rowCount() > 0) {
         $user = $statement->fetch(PDO::FETCH_ASSOC);

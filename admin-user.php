@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
 }
 
 
-$sqlQuery = "SELECT * FROM `accounts` WHERE role = 'user'";
+$sqlQuery = "SELECT * FROM `v_all_users`";
 $statement = $connection->prepare($sqlQuery);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -127,7 +127,9 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             </thead>
             <tbody>
                 <?php foreach ($result as $row):
-                    $verified = $row["Verification"] ? "Verified" : "Not Verified";
+                    $verified = ($row["Verification"]) === 1 ? "Verified" 
+                    : ($row["Verification"] === 2 ? "Blocked" 
+                    : "Pending");
                 ?>
                     <tr>
                         <th scope="row"><?php echo $row['Account_ID'] ?></th>

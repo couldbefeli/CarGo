@@ -16,8 +16,9 @@ if (isset($_SESSION['user_error'])) {
 }
 
 
-$sqlQuery = "SELECT * FROM `accounts` WHERE Account_ID = {$_SESSION['user_id']}";
+$sqlQuery = "CALL sp_select_user(?)";
 $statement = $connection->prepare($sqlQuery);
+$statement->bindParam(1, $_SESSION['user_id'], PDO::PARAM_INT);
 $statement->execute();
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 

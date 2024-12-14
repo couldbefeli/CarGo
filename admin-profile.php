@@ -8,10 +8,17 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
     exit(); // Ensure the script stops execution after redirection
 }
 
+if (isset($_SESSION['admin_error'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['admin_error'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['admin_error']); // Clear the error message after displaying it
+}
 
-
-$sqlQuery = "SELECT * FROM `accounts` WHERE Account_ID = {$_SESSION['admin_id']}";
+$sqlQuery = "CALL sp_select_admin(?)";
 $statement = $connection->prepare($sqlQuery);
+$statement->bindParam(1, $_SESSION['admin_id'], PDO::PARAM_INT);
 $statement->execute();
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 

@@ -64,7 +64,6 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
 
 <body>
 
-
     <!-- Sidebar -->
     <div class="sidebar bg-white shadow-lg d-flex flex-column justify-content-between vh-100">
         <div>
