@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,8 +69,10 @@
                             class="bi bi-car-front-fill me-2"></i>Cars</button></a>
                 <a href="admin-user.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-people-fill me-2"></i>Users</button></a>
-                <a href="admin-rental.php"><button class="btn btn-success w-100 d-flex align-items-start"><i
+                <a href="admin-rental.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-clock-fill me-2"></i>Rental History</button></a>
+                            <a href="admin-rental.php"><button class="btn btn-success w-100 d-flex align-items-start"><i
+                            class="bi bi-hourglass me-2"></i>Pending Booking</button></a>
                 <hr class="text-secondary my-4">
                 <a href="admin-chats.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-chat-dots-fill me-2 position-relative"><span
@@ -80,7 +89,7 @@
                 <img src="img/avatar.png" class="me-3" width="40" height="40">
                 <div class=" d-flex flex-column justify-content-center">
                     <small class="text-secondary">Welcome back <span>👋</span></small>
-                    <p class="text-dark m-0 fw-bold">Admin Name</p>
+                    <p class="text-dark m-0 fw-bold"><?php echo $_SESSION['admin_firstName'] ?></p>
                 </div>
             </div>
         </div>

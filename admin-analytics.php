@@ -79,6 +79,8 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                             class="bi bi-people-fill me-2"></i>Users</button></a>
                 <a href="admin-rental.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-clock-fill me-2"></i>Rental History</button></a>
+                <a href="admin-pending-booking.php"><button class="btn text-success w-100 d-flex align-items-start"><i
+                            class="bi bi-hourglass me-2"></i>Pending Booking</button></a>
 
                 <hr class="text-secondary my-4">
                 <a href="admin-chats.php"><button class="btn text-success w-100 d-flex align-items-start"><i
