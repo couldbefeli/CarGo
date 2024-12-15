@@ -1,6 +1,9 @@
 <?php
 
 session_start();
+require 'connection.php';
+
+$sqlQuery = "SELECT * FROM v_all_pending_booking";
 
 
 ?>

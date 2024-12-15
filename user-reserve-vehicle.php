@@ -13,8 +13,8 @@ if (isset($_POST['reserveButton'])) {
     $pickupDate = date("Y-m-d", strtotime($_POST['pickupDate']));
     $returnDate = date("Y-m-d", strtotime($_POST['returnDate']));
     $bookingStatus = 1;
-    $totalDays = date_diff(date_create($pickupDate), date_create($returnDate))->days;
-    $totalPrice = $origPrice * $totalDays;
+    $totalDays = ($pickupDate === !$returnDate) ? date_diff(date_create($pickupDate), date_create($returnDate))->days : 1;
+    $totalPrice = ($totalDays === 1) ? $origPrice : $origPrice * $totalDays;
 
 
 
@@ -33,6 +33,6 @@ if (isset($_POST['reserveButton'])) {
     $statement->execute();
 
     // echo $totalPrice;
-
+    $_SESSION['reserve_success'] = "You have successfully reserved a car. You are being redirected to your billing history now.";
     header("Location: user-billing-history.php");
 }

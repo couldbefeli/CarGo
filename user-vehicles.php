@@ -217,6 +217,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
             pickupDateInputs.forEach((pickupDateInput, index) => {
                 const today = new Date().toISOString().split('T')[0];
                 pickupDateInput.setAttribute('min', today);
+            
 
                 pickupDateInput.addEventListener('change', function() {
                     const returnDateInput = returnDateInputs[index];

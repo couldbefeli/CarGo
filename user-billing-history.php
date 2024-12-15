@@ -6,6 +6,14 @@ if (!isset($_SESSION['email'])) {
     header('Location: user-sign-in.php');
 }
 
+if (isset($_SESSION['reserve_success'])) {
+    echo '
+    <script>
+    alert("' . htmlspecialchars($_SESSION['reserve_success'], ENT_QUOTES, 'UTF-8') . '");
+    </script>';
+    unset($_SESSION['reserve_success']); // Clear the error message after displaying it
+}
+
 ?>
 
 
