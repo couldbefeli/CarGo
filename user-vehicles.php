@@ -93,8 +93,8 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($result as $row): ?>
                         <?php if ($row['Car_Status'] === "available"): ?>
 
-                        <div class="col">
-                            
+                            <div class="col">
+
                                 <div class="card">
                                     <div class="d-flex justify-content-center bg-body-secondary p-3">
                                         <img src="img/cars/<?php echo $row['Car_Image'] ?>" class="card-img-top" alt="..."
@@ -121,7 +121,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                         </div>
                                     </div>
                                 </div>
-                        </div>
+                            </div>
                         <?php endif; ?>
 
                         <!-- modal for reserving a car SESSION EMAIL TRUE -->
@@ -148,6 +148,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                                 <h4 class="mt-2">Rent Date</h4>
                                                 <h6 class="mt-2 text-end">
                                                     <small><?php echo $row['Price'] ?></small>
+                                                    <input type="hidden" name="price" value="<?php echo $row['Price'] ?>" id="">
                                                     <caption>/day</caption>
                                                 </h6>
                                             </div>
@@ -155,14 +156,15 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                             <div class="mb-3">
                                                 <div class="col">
                                                     <label for="rentFromDate" class="form-label text-body-tertiary">Pickup Date</label>
-                                                    <input type="date" class="form-control" id="pickupDate"
-                                                        placeholder="name@example.com">
+                                                    <input type="date" class="form-control" id="pickUpDate"
+                                                        placeholder="name@example.com" name="pickupDate">
+
                                                 </div>
 
                                                 <div class="col">
                                                     <label for="rentToDate" class="form-label text-body-tertiary">Return Date</label>
                                                     <input type="date" class="form-control" id="returnDate"
-                                                        placeholder="name@example.com">
+                                                        placeholder="name@example.com" name="returnDate">
                                                 </div>
 
 
@@ -208,7 +210,37 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
     </main>
 
     <script>
-        const myInput = document.getElementById('myInput')
+        document.addEventListener('DOMContentLoaded', function() {
+            const pickupDateInputs = document.querySelectorAll('#pickUpDate');
+            const returnDateInputs = document.querySelectorAll('#returnDate');
+
+            pickupDateInputs.forEach((pickupDateInput, index) => {
+                const today = new Date().toISOString().split('T')[0];
+                pickupDateInput.setAttribute('min', today);
+
+                pickupDateInput.addEventListener('change', function() {
+                    const returnDateInput = returnDateInputs[index];
+
+                    returnDateInput.min = this.value;
+
+                    if (returnDateInput.value && new Date(returnDateInput.value) < new Date(this.value)) {
+                        returnDateInput.value = '';
+                    }
+                });
+
+                returnDateInputs[index].addEventListener('change', function() {
+                    if (pickupDateInput.value) {
+                        const pickupDate = new Date(pickupDateInput.value);
+                        const returnDate = new Date(this.value);
+
+                        if (returnDate < pickupDate) {
+                            this.value = '';
+                            alert('Return date must be on or after pickup date');
+                        }
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
