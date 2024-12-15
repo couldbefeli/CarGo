@@ -3,7 +3,12 @@
 session_start();
 require 'connection.php';
 
-$sqlQuery = "SELECT * FROM v_all_pending_booking";
+$sqlQuery = "SELECT * FROM v_booking_pending";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$pendingBookings = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+// var_dump($pendingBookings)
 
 
 ?>
@@ -74,7 +79,7 @@ $sqlQuery = "SELECT * FROM v_all_pending_booking";
                             class="bi bi-people-fill me-2"></i>Users</button></a>
                 <a href="admin-rental.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-clock-fill me-2"></i>Rental History</button></a>
-                            <a href="admin-rental.php"><button class="btn btn-success w-100 d-flex align-items-start"><i
+                <a href="admin-rental.php"><button class="btn btn-success w-100 d-flex align-items-start"><i
                             class="bi bi-hourglass me-2"></i>Pending Booking</button></a>
                 <hr class="text-secondary my-4">
                 <a href="admin-chats.php"><button class="btn text-success w-100 d-flex align-items-start"><i
@@ -99,7 +104,7 @@ $sqlQuery = "SELECT * FROM v_all_pending_booking";
     </div>
 
     <div class="content">
-        <h2>Booking History</h2>
+        <h2>Pending Booking</h2>
 
         <table class="table mt-3">
             <thead>
@@ -109,61 +114,62 @@ $sqlQuery = "SELECT * FROM v_all_pending_booking";
                     <th scope="col">Model Name</th>
                     <th scope="col">PickUp Date</th>
                     <th scope="col">Return Date</th>
-                    <th scope="col">Rent Date</th>
                     <th scope="col">Total Price</th>
                     <th scope="col">Booking Status</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody id="bookingTable">
-                <tr data-status="Pending">
-                    <td>101</td>
-                    <td>John Doe</td>
-                    <td>Toyota Corolla</td>
-                    <td>2024-12-01</td>
-                    <td>2024-12-05</td>
-                    <td>5 Days</td>
-                    <td>$200</td>
-                    <td>Pending</td>
-                    <td>
-                        <button class="btn btn-success btn-sm acceptBtn">Accept</button>
-                        <button class="btn btn-danger btn-sm doneBtn">Done</button>
-                    </td>
-                </tr>
-                <tr data-status="Pending">
-                    <td>102</td>
-                    <td>Jane Smith</td>
-                    <td>Honda Civic</td>
-                    <td>2024-12-03</td>
-                    <td>2024-12-07</td>
-                    <td>4 Days</td>
-                    <td>$180</td>
-                    <td>Pending</td>
-                    <td>
-                        <button class="btn btn-success btn-sm acceptBtn">Accept</button>
-                        <button class="btn btn-danger btn-sm doneBtn">Done</button>
-                    </td>
-                </tr>
-                <tr data-status="Pending">
-                    <td>103</td>
-                    <td>Michael Brown</td>
-                    <td>Ford Escape</td>
-                    <td>2024-12-02</td>
-                    <td>2024-12-06</td>
-                    <td>5 Days</td>
-                    <td>$250</td>
-                    <td>Pending</td>
-                    <td>
-                        <button class="btn btn-success btn-sm acceptBtn">Accept</button>
-                        <button class="btn btn-danger btn-sm doneBtn">Done</button>
-                    </td>
-                </tr>
+                <?php foreach ($pendingBookings as $pendingBooking): ?>
+                    <?php if ($pendingBooking['Booking_Status'] != "Done"): ?>
+                        <tr>
+                            <td><?php echo $pendingBooking['Booking_ID'] ?></td>
+                            <td><?php echo $pendingBooking['customer_name'] ?></td>
+                            <td><?php echo $pendingBooking['Model_Name'] ?></td>
+                            <td><?php echo date("F j, Y", strtotime($pendingBooking['PickUp_Date']))  ?></td>
+                            <td><?php echo date("F j, Y", strtotime($pendingBooking['Return_Date'])) ?></td>
+                            <td><?php echo $pendingBooking['Total_Price'] ?></td>
+                            <td><?php echo $pendingBooking['Booking_Status'] ?></td>
+                            <td>
+                                <form action="admin-accept-pending-booking.php" method="POST">
+                                    <input type="hidden" name="bookingID" value="<?php echo $pendingBooking['Booking_ID'] ?>">
+                                    <button type="submit" class="btn btn-success btn-sm acceptBtn" name="acceptButton">Accept</button>
+                                    <button type="button" data-bs-toggle="modal"
+                                        data-bs-target="#deleteCarModal-<?php echo $pendingBooking['Booking_ID']; ?>" class="btn btn-danger btn-sm doneBtn" name="doneButton">Done</button>
+
+                                </form>
+                            </td>
+                        </tr>
+
+                        <div class="modal fade" id="deleteCarModal-<?php echo $pendingBooking['Booking_ID']; ?>" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">This cannot be undone.</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to mark this booking as done?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <form action="admin-accept-pending-booking.php" method="POST">
+                                            <input type="hidden" name="bookingID" value="<?php echo $pendingBooking['Booking_ID'] ?>">
+                                            <button type="submit" name="doneButton" class="btn btn-danger">Confirm</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
             </tbody>
+        <?php endforeach; ?>
         </table>
     </div>
 
     <script>
-        
+
     </script>
 
 </body>

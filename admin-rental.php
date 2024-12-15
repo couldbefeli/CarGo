@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require 'connection.php';
 
@@ -6,6 +6,12 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
     header('Location: admin-sign-in.php');
     exit(); // Ensure the script stops execution after redirection
 }
+
+$sqlQuery = "SELECT * FROM v_all_cars";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$cars = $statement->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($cars);
 
 
 ?>
@@ -27,13 +33,36 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
     <style>
         body {
             display: flex;
+            min-height: 100vh;
             height: 100vh;
+            overflow: hidden;
         }
 
         .sidebar {
             width: 250px;
-            color: white;
+            flex-shrink: 0;
+            /* Prevent sidebar from shrinking */
+            background-color: white;
+            color: black;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar .btn {
+            width: 100%;
+            text-align: left;
+            justify-content: start;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+            overflow-y: auto;
         }
 
         .sidebar a {
@@ -42,14 +71,6 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
             display: block;
             margin: 15px 0;
 
-        }
-
-
-
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #f8f9fa;
         }
 
         .card {
@@ -80,7 +101,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                             class="bi bi-people-fill me-2"></i>Users</button></a>
                 <a href="admin-rental.php"><button class="btn btn-success w-100 d-flex align-items-start"><i
                             class="bi bi-clock-fill me-2"></i>Rental History</button></a>
-                            <a href="admin-pending-booking.php"><button class="btn text-success w-100 d-flex align-items-start"><i
+                <a href="admin-pending-booking.php"><button class="btn text-success w-100 d-flex align-items-start"><i
                             class="bi bi-hourglass me-2"></i>Pending Booking</button></a>
 
                 <hr class="text-secondary my-4">
@@ -113,22 +134,25 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
 
         </div>
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 row-cols-xl-9 gx-3 gy-4">
-            <!-- Card 1 -->
-            <div class="col">
-                <div class="card bg-transparent" style="width: 100%;">
-                    <div class="bg-body-secondary p-5">
-                        <img src="img/car.png" class="card-img-top" alt="...">
-                    </div>
-                    <div class="card-body">
-                        <h6 class="card-title">Chevrolet Corvette Z06 2018</h6>
-                        <div class="d-flex justify-content-end">
 
-                            <button class="btn btn-sm btn-success " data-bs-toggle="modal"
-                                data-bs-target="#historyCarModal" id="historyCarModalButton">View History</button>
+            <!-- Card 1 -->
+            <?php foreach ($cars as $car): ?>
+                <div class="col">
+                    <div class="card bg-transparent" style="width: 100%;">
+                        <div class="bg-body-secondary p-5">
+                            <img src="img/cars/<?php echo $car['Car_Image'] ?>" class="card-img-top" alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title"><?php echo $car['car_brand'] . " " . $car['Model_Name'] ?></h6>
+                            <div class="d-flex justify-content-end">
+
+                                <button class="btn btn-sm btn-success " data-bs-toggle="modal"
+                                    data-bs-target="#historyCarModal" id="historyCarModalButton">View History</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
 
 
         </div>
@@ -149,27 +173,27 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
 
                     <table class="table">
                         <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Car</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Cash Payment</th>
-                            <th scope="col">Days</th>
-                            <th scope="col">Date</th>
-                          </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Car</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Cash Payment</th>
+                                <th scope="col">Days</th>
+                                <th scope="col">Date</th>
+                            </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Chevrolet Corvette Z06 2018</td>
-                            <td>juandealcruz00</td>
-                            <td>₱ 46,600</td>
-                            <td>4</td>
-                            <td>March 4, 2023</td>
-                          </tr>
-                         
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Chevrolet Corvette Z06 2018</td>
+                                <td>juandealcruz00</td>
+                                <td>₱ 46,600</td>
+                                <td>4</td>
+                                <td>March 4, 2023</td>
+                            </tr>
+
                         </tbody>
-                      </table>
+                    </table>
 
                 </div>
                 <div class="modal-footer">
