@@ -28,7 +28,7 @@ try {
 $admin = [];
 if (!isset($_SESSION['admin_id'])) {
     try {
-        $sql = "SELECT * FROM accounts WHERE role = 'admin'";
+        $sql = "SELECT * FROM v_select_admin";
         $stmt = $connection->prepare($sql);
         $stmt->execute();
         $admin = $stmt->fetch(PDO::FETCH_ASSOC); 
