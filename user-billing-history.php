@@ -14,6 +14,12 @@ if (isset($_SESSION['reserve_success'])) {
     unset($_SESSION['reserve_success']); // Clear the error message after displaying it
 }
 
+$sqlQuery = "SELECT * FROM v_user_billing";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+
+$billings = $statement->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($billings)
 
 
 ?>
@@ -85,12 +91,20 @@ if (isset($_SESSION['reserve_success'])) {
                         </tr>
                     </thead>
                     <tbody>
+                    <?php $num = 1 ?>
+
+                        <?php foreach ($billings as $billing): ?>
+                        <?php if ($billing['Account_ID'] === $_SESSION['user_id']): ?>
                         <tr>
-                            <td>1</td>
-                            <td>Ford Mustang</td>
-                            <td>2024-10-12</td>
-                            <td>120</td>
+                            <td><?php echo $num ?></td>
+                            <?php $num += 1 ?>
+
+                            <td><?php echo $billing['Model_Name'] ?></td>
+                            <td><?php echo date("F j, Y", strtotime($billing['PickUp_Date']) ) ?></td>
+                            <td><?php echo $billing['Total_Price'] ?></td>
                         </tr>
+                        <?php endif ?>
+                        <?php endforeach; ?>
                         
                     </tbody>
                 </table>

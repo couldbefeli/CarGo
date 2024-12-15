@@ -8,6 +8,35 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
     exit(); // Ensure the script stops execution after redirection
 }
 
+$sqlQuery = "SELECT * FROM revenue";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$revenue = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$statement->closeCursor();
+
+$sqlQuery = "SELECT * FROM v_total_rented_cars";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$totalRentedCars = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$statement->closeCursor();
+
+$sqlQuery = "SELECT * FROM v_all_pending_booking";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$pendingBookings = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$statement->closeCursor();
+
+$sqlQuery = "SELECT * FROM v_currently_rented_cars";
+$statement = $connection->prepare($sqlQuery);
+$statement->execute();
+$currentlyRented = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$statement->closeCursor();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -126,7 +155,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title text-black-50">Currently Rented Cars</h5>
-                        <h1 id="currentlyRentedCarsCount" class="display-4 text-success fw-bold">12</h1>
+                        <h1 id="currentlyRentedCarsCount" class="display-4 text-success fw-bold"><?php echo $currentlyRented[0]['rented'] ?></h1>
                     </div>
                 </div>
             </div>
@@ -134,7 +163,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title text-black-50">Total Rented Cars</h5>
-                        <h1 id="totalRentedCarsCount" class="display-4 text-success fw-bold">16</h1>
+                        <h1 id="totalRentedCarsCount" class="display-4 text-success fw-bold"><?php echo $totalRentedCars[0]['pending'] ?></h1>
                     </div>
                 </div>
             </div>
@@ -147,7 +176,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title text-black-50">Total Revenue</h5>
-                        <h1 id="totalRevenueCount" class="display-4 text-success fw-bold">₱46,000</h1>
+                        <h1 id="totalRevenueCount" class="display-4 text-success fw-bold">₱<?php echo $revenue[0]['MonthlyRevenue'] ?></h1>
                     </div>
                 </div>
             </div>
@@ -155,7 +184,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title text-black-50">Pending Bookings</h5>
-                        <h1 id="pendingBookingsCount" class="display-4 text-success fw-bold">04</h1>
+                        <h1 id="pendingBookingsCount" class="display-4 text-success fw-bold"><?php echo $pendingBookings[0]['pending_booking'] ?></h1>
                     </div>
                 </div>
             </div>
