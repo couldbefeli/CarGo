@@ -109,56 +109,62 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
         <h2>Analytics</h2>
         <div class="row">
             <!-- Revenue Analytics Card -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-black-50">Revenue Analytics</h5>
                         <canvas id="revenueChart"></canvas>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Currently Rented Cars Card -->
-            <div class="col-md-6 d-flex col-sm-1">
-
-                <div class="col-md-6 pe-3 d-flex flex-column">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-black-50">Currently Rented Cars</h5>
-                            <h1 id="rentedCarsCount" class="display-3 text-success fw-bold">12</h1>
-                        </div>
-                    </div>
-
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-black-50">Rented Cars</h5>
-                            <p id="rentedCarsCount" class="display-3 text-success fw-bold">16</p>
-                        </div>
+            <div class="row g-3">
+    <div class="col-md-6">
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-black-50">Currently Rented Cars</h5>
+                        <h1 id="currentlyRentedCarsCount" class="display-4 text-success fw-bold">12</h1>
                     </div>
                 </div>
-
-
-                <div class="col-md-6 d-flex flex-column">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-black-50">Total Revenue</h5>
-                            <p id="rentedCarsCount" class="display-3 text-success fw-bold">₱46,000</p>
-                        </div>
-                    </div>
-
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title text-black-50">Pending Bookings</h5>
-                            <p id="rentedCarsCount" class="display-3 text-success fw-bold">04</p>
-                        </div>
+            </div>
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-black-50">Total Rented Cars</h5>
+                        <h1 id="totalRentedCarsCount" class="display-4 text-success fw-bold">16</h1>
                     </div>
                 </div>
-
             </div>
         </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-black-50">Total Revenue</h5>
+                        <h1 id="totalRevenueCount" class="display-4 text-success fw-bold">₱46,000</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-black-50">Pending Bookings</h5>
+                        <h1 id="pendingBookingsCount" class="display-4 text-success fw-bold">04</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
 
-        <div class="row">
-            <!-- Names of Rented Cars -->
+        <!-- <div class="row">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
@@ -200,7 +206,6 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                 </div>
             </div>
 
-            <!-- Top Rented Cars -->
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
@@ -233,7 +238,7 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Chart.js Script -->

@@ -11,9 +11,11 @@ $sqlQuery = "SELECT * FROM v_all_cars";
 $statement = $connection->prepare($sqlQuery);
 $statement->execute();
 $cars = $statement->fetchAll(PDO::FETCH_ASSOC);
-// var_dump($cars);
 
-
+$sqlQuery = "SELECT * FROM `v_billing_history`";
+$stmt = $connection->prepare($sqlQuery);
+$stmt->execute();
+$billings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -131,77 +133,72 @@ $cars = $statement->fetchAll(PDO::FETCH_ASSOC);
     <div class="content">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Rental History</h2>
-
         </div>
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 row-cols-xl-9 gx-3 gy-4">
-
-            <!-- Card 1 -->
             <?php foreach ($cars as $car): ?>
                 <div class="col">
                     <div class="card bg-transparent" style="width: 100%;">
                         <div class="bg-body-secondary p-5">
-                            <img src="img/cars/<?php echo $car['Car_Image'] ?>" class="card-img-top" alt="...">
+                            <img src="img/cars/<?php echo htmlspecialchars($car['Car_Image']) ?>" class="card-img-top" alt="<?php echo htmlspecialchars($car['car_brand'] . " " . $car['Model_Name']); ?>">
                         </div>
                         <div class="card-body">
-                            <h6 class="card-title"><?php echo $car['car_brand'] . " " . $car['Model_Name'] ?></h6>
+                            <h6 class="card-title"><?php echo htmlspecialchars($car['car_brand'] . " " . $car['Model_Name']); ?></h6>
                             <div class="d-flex justify-content-end">
+                                <button class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#historyCarModal-<?php echo $car['Car_ID'] ?>">View History</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                <button class="btn btn-sm btn-success " data-bs-toggle="modal"
-                                    data-bs-target="#historyCarModal" id="historyCarModalButton">View History</button>
+                <!-- Modal for each car -->
+                <div class="modal fade" id="historyCarModal-<?php echo $car['Car_ID'] ?>" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><?php echo htmlspecialchars($car['car_brand'] . " " . $car['Model_Name']); ?> Rental History</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Car</th>
+                                            <th scope="col">Cash Payment</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $index = 1;
+                                        $carBillings = array_filter($billings, function ($billing) use ($car) {
+                                            return $billing['Model_Name'] == $car['Model_Name'];
+                                        });
+
+                                        foreach ($carBillings as $billing):
+                                        ?>
+                                            <tr>
+                                                <th scope="row"><?php echo $index++; ?></th>
+                                                <td><?php echo htmlspecialchars($car['car_brand'] . " " . $car['Model_Name']); ?></td>
+                                                <td>₱ <?php echo number_format($billing['Total_Price'], 2); ?></td>
+                                                <td><?php echo date('F j, Y', strtotime($billing['PickUp_Date'])); ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
-
-
         </div>
     </div>
 
 
-
-    <!-- modal for update car -->
-
-    <div class="modal fade" id="historyCarModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Chevrolet Corvette Z06-2018</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Car</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Cash Payment</th>
-                                <th scope="col">Days</th>
-                                <th scope="col">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Chevrolet Corvette Z06 2018</td>
-                                <td>juandealcruz00</td>
-                                <td>₱ 46,600</td>
-                                <td>4</td>
-                                <td>March 4, 2023</td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 

@@ -84,7 +84,12 @@ if (isset($_SESSION['user_success'])) {
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" min="4" max="16" required>
+                                    <span class="input-group-text bg-transparent border-start-0" style="cursor: pointer;">
+                                        <i class="bi bi-eye-slash text-muted" id="togglePassword"></i>
+                                    </span>
+                                </div>
                             </div>
                             <input type="submit" class="btn btn-success w-100" value="Sign In" name="userSigninButton">
                         </form>
@@ -160,5 +165,23 @@ if (isset($_SESSION['user_success'])) {
     </footer>
 
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword.addEventListener('click', function () {
+
+            // show and unshow password
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // toggle the icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+    });
+</script>
 
 </html>

@@ -13,7 +13,10 @@ $statement = $connection->prepare($sqlCarType);
 $statement->execute();
 $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-
+if (isset($_SESSION['error'])) {
+    echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+    unset($_SESSION['error']);
+}
 
 ?>
 

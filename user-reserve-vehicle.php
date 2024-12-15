@@ -5,6 +5,7 @@ require 'connection.php';
 date_default_timezone_set('Asia/Manila');
 
 if (isset($_POST['reserveButton'])) {
+    
     $carID = $_POST['Car_ID'];
     $origPrice = $_POST['price'];
 
@@ -16,7 +17,12 @@ if (isset($_POST['reserveButton'])) {
     $totalDays = max(1, date_diff(date_create($pickupDate), date_create($returnDate))->days);
     $totalPrice = $origPrice * $totalDays;
 
-    // echo $totalDays;
+    // limits reserving to 30 days only
+   if ($totalDays > 7){
+        $_SESSION['error'] = "The rental period cannot exceed 30 days.";
+        header("Location: user-vehicles.php");
+        exit;
+    }
 
     $sqlQuery = "CALL sp_add_booking(?, ?, ? ,? ,?, ?, ?)";
     $statement = $connection->prepare($sqlQuery);
@@ -31,6 +37,8 @@ if (isset($_POST['reserveButton'])) {
 
 
     $statement->execute();
+
+
 
     // echo $totalPrice;
     $_SESSION['reserve_success'] = "You have successfully reserved a car. You are being redirected to your billing history now.";

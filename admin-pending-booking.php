@@ -2,6 +2,7 @@
 
 session_start();
 require 'connection.php';
+date_default_timezone_set('Asia/Manila');
 
 $sqlQuery = "SELECT * FROM v_booking_pending";
 $statement = $connection->prepare($sqlQuery);
@@ -10,6 +11,7 @@ $pendingBookings = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 // var_dump($pendingBookings)
 
+// echo date("Y m, d");
 
 ?>
 
@@ -133,9 +135,13 @@ $pendingBookings = $statement->fetchAll(PDO::FETCH_ASSOC);
                             <td>
                                 <form action="admin-accept-pending-booking.php" method="POST">
                                     <input type="hidden" name="bookingID" value="<?php echo $pendingBooking['Booking_ID'] ?>">
-                                    <button type="submit" class="btn btn-success btn-sm acceptBtn" name="acceptButton">Accept</button>
+                                    <?php
+                                    $today = strtotime(date("Y-m-d"));
+                                    $pickupTimestamp = strtotime($pendingBooking['PickUp_Date']);
+                                    ?>
+                                    <button type="submit" class="btn btn-success btn-sm acceptBtn" name="acceptButton" <?php echo ($today != $pickupTimestamp) ? "disabled" : "" ?>>Accept</button>
                                     <button type="button" data-bs-toggle="modal"
-                                        data-bs-target="#deleteCarModal-<?php echo $pendingBooking['Booking_ID']; ?>" class="btn btn-danger btn-sm doneBtn" name="doneButton">Done</button>
+                                        data-bs-target="#deleteCarModal-<?php echo $pendingBooking['Booking_ID']; ?>" class="btn btn-white border border-success btn-sm doneBtn" name="doneButton" <?php echo ($today != $pickupTimestamp) ? "disabled" : "" ?>>Done</button>
 
                                 </form>
                             </td>

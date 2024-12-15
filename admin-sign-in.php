@@ -5,7 +5,7 @@ require 'connection.php';
 
 if (isset($_SESSION['admin_email']) && $_SESSION['admin_id']) {
     header('admin-analytics.php');
-} 
+}
 
 if (isset($_SESSION['admin_success'])) {
     echo '
@@ -38,7 +38,7 @@ if (isset($_SESSION['error'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
         html,
@@ -54,9 +54,9 @@ if (isset($_SESSION['error'])) {
 </head>
 
 <body class="d-flex flex-column h-100 align-items-center justify-content-center">
-    
 
-    <main class='my-4 d-flex mt-5' >
+
+    <main class='my-4 d-flex mt-5'>
         <div class="container d-flex justify-content-center">
             <div>
                 <div class=" d-flex justify-content-center">
@@ -67,11 +67,16 @@ if (isset($_SESSION['error'])) {
                         <form action="admin-sign-in-logic.php" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
-                                <input type="text" class="form-control" id="email" name="email" required>
+                                <input type="text" class="form-control" id="email" name="email" min="5" max="320" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" min="4" max="16" required>
+                                    <span class="input-group-text bg-transparent border-start-0" style="cursor: pointer;">
+                                        <i class="bi bi-eye-slash text-muted" id="togglePassword"></i>
+                                    </span>
+                                </div>
                             </div>
                             <input type="submit" class="btn btn-success w-100" value="Sign In" name="adminSignInButton">
                         </form>
@@ -92,8 +97,40 @@ if (isset($_SESSION['error'])) {
 
     </main>
 
-    
-
 </body>
 
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword.addEventListener('click', function() {
+            // show and unshow thep password
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle the icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+    });
+</script> -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword.addEventListener('click', function () {
+
+            // show and unshow password
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // toggle the icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+    });
+</script>
 </html>
