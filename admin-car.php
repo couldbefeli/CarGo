@@ -11,10 +11,11 @@ if (!isset($_SESSION['admin_email']) && !isset($_SESSION['admin_id'])) {
 }
 
 
-$sqlCarType = "SELECT * FROM `car_type`, `car_brand` WHERE car_type.type_id = car_brand.brand_id";
+$sqlCarType = "SELECT * FROM `car_type` RIGHT JOIN `car_brand` ON car_type.type_id = car_brand.brand_id;";
 $statement = $connection->prepare($sqlCarType);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($result);
 
 $sqlCars = "SELECT * FROM `cars`";
 $statement = $connection->prepare($sqlCars);
@@ -354,7 +355,7 @@ $result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
                                         <option value="" disabled selected>Brand</option>
 
                                         <?php foreach ($result as $row): ?>
-
+                                            
                                             <option value="<?php echo $row['brand_id'] ?>"><?php echo $row['brand_name'] ?></option>
                                         <?php endforeach; ?>
                                     </select>

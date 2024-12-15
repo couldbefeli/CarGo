@@ -2,7 +2,7 @@
 
 try {
     $host = "localhost";
-    $dbname = "cargo";
+    $dbname = "cargo_db";
     $username = "root";
     $password = "";
 
