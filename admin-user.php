@@ -210,7 +210,7 @@ $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                             <form action="admin-user-action.php" class="d-inline" method="POST">
                                 <input type="hidden" name="id" value="<?php echo $row['Account_ID'] ?>">
                                 <button name='verifyButton' class="btn btn-success btn-sm" <?php echo $row['Verification'] === 1 ? "disabled" : "" ?> type="submit">Verify</button>
-                                <button name='blockButton' class="btn btn-danger btn-sm" type="submit"><?php echo $row['Verification'] === 2 ? "Unblock" : "Block" ?></button>
+                                <button name='<?php echo $row['Verification'] === 2 ? "unblockButton" : "blockButton" ?>' class="btn btn-danger btn-sm" type="submit"><?php echo $row['Verification'] === 2 ? "Unblock" : "Block" ?></button>
                             </form>
 
                         </td>

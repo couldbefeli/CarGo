@@ -11,7 +11,7 @@ if (isset($_SESSION['reserve_success'])) {
     <script>
     alert("' . htmlspecialchars($_SESSION['reserve_success'], ENT_QUOTES, 'UTF-8') . '");
     </script>';
-    unset($_SESSION['reserve_success']); // Clear the error message after displaying it
+    unset($_SESSION['reserve_success']);
 }
 
 $sqlQuery = "SELECT * FROM v_user_billing";

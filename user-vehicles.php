@@ -3,15 +3,12 @@
 session_start();
 require 'connection.php';
 
-$sqlCars = "SELECT * FROM `cars` ORDER BY Model_Name ASC";
+$sqlCars = "SELECT * FROM v_all_cars";
 $statement = $connection->prepare($sqlCars);
 $statement->execute();
 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-$sqlCarType = "SELECT type_name, brand_name FROM `car_type`, `car_brand` WHERE car_type.type_id = car_brand.brand_id";
-$statement = $connection->prepare($sqlCarType);
-$statement->execute();
-$result2 = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 
 if (isset($_SESSION['error'])) {
     echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';

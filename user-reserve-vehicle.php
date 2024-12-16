@@ -17,12 +17,36 @@ if (isset($_POST['reserveButton'])) {
     $totalDays = max(1, date_diff(date_create($pickupDate), date_create($returnDate))->days);
     $totalPrice = $origPrice * $totalDays;
 
-    // limits reserving to 30 days only
+    $sqlFetchBooking = "CALL sp_checkdate(?)";
+    $stmt = $connection->prepare($sqlFetchBooking);
+    $stmt->bindParam(1, $carID, PDO::PARAM_INT);
+    $stmt->execute();
+
+
+
+    $bookingSpecific = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // var_dump($bookingSpecific);
+
+    $stmt->closeCursor();
+    
    if ($totalDays > 7){
-        $_SESSION['error'] = "The rental period cannot exceed 30 days.";
+        $_SESSION['error'] = "The rental period cannot exceed 7 days.";
         header("Location: user-vehicles.php");
         exit;
     }
+
+    // foreach ($bookingSpecific as $booking) {
+    //     $existingStartDate = $booking['PickUp_Date'];
+    //     $existingEndDate = $booking['Return_Date'];
+
+    //     if (isDateOverlapping($pickupDate, $returnDate, $existingStartDate, $existingEndDate)) {
+    //         $_SESSION['error'] = "Please Select another date. Someone booked that date already";
+    //         header("Location: user-vehicles.php");
+    //     };
+
+    // }
+
+    
 
     $sqlQuery = "CALL sp_add_booking(?, ?, ? ,? ,?, ?, ?)";
     $statement = $connection->prepare($sqlQuery);
@@ -43,4 +67,14 @@ if (isset($_POST['reserveButton'])) {
     // echo $totalPrice;
     $_SESSION['reserve_success'] = "You have successfully reserved a car. You are being redirected to your billing history now.";
     header("Location: user-billing-history.php");
+}
+
+function isDateOverlapping($startDate1, $endDate1, $startDate2, $endDate2) {
+    $start1 = $startDate1;
+    $end1 = $endDate1;
+    $start2 = strtotime($startDate2);
+    $end2 = strtotime($endDate2);
+
+
+    return ($start1 <= $end2 && $end1 >= $start2);
 }

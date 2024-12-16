@@ -1,9 +1,9 @@
-<?php 
-    require "connection.php";
-    session_start();
-    
-    // session_destroy();
-    // unset($_SESSION["email"]);
+<?php
+require "connection.php";
+session_start();
+
+// session_destroy();
+// unset($_SESSION["email"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,10 +40,18 @@
                     <li class="nav-item">
                         <a class="nav-link text-success" href="user-vehicles.php">VEHICLES</a>
                     </li>
-                    
+
                     <li class="nav-item">
-                        <a class="nav-link text-success" href="<?php if (!isset($_SESSION["email"])){echo "user-sign-in.php";} else { echo "user-chats.php";} ?>"><?php if (!isset($_SESSION["email"])){echo "SIGN IN";} else { echo "PROFILE";} 
-                            ?></a>
+                        <a class="nav-link text-success" href="<?php if (!isset($_SESSION["email"])) {
+                                                                    echo "user-sign-in.php";
+                                                                } else {
+                                                                    echo "user-chats.php";
+                                                                } ?>"><?php if (!isset($_SESSION["email"])) {
+                                                                                                                                                                        echo "SIGN IN";
+                                                                                                                                                                    } else {
+                                                                                                                                                                        echo "PROFILE";
+                                                                                                                                                                    }
+                                                                                                                                                                    ?></a>
                     </li>
                 </ul>
             </div>
@@ -69,8 +77,7 @@
                         from luxury to economy, tailored to suit every road and every traveler.</p>
                 </div>
                 <div class="second-row-button">
-                    <button class="explore">EXPLORE OUR FLEET</button>
-                    <button class="book-now">BOOK NOW</button>
+                    <button class="book-now"><a href="user-vehicles.php">BOOK NOW</a></button>
                 </div>
             </div>
             <div class="second-row-pictures">
@@ -107,41 +114,54 @@
             <div class="feature-heading-container">
                 <h1 class="featured-heading">Featured</h1>
             </div>
-            <div class="carousel-container">
-                <div class="carousel">
-                    <div class="card border-0">
-                        <div class="car-info">
-                            <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
-                            <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
-                            <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
-                                supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
+            <div class="carousel-explore-container">
+            <div class="carousel-explore">
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <div class="card border-0">
+                            <div class="car-info">
+                                <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
+                                <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
+                                <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
+                                    supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
+                            </div>
+                            <div class="reserve-btn-container">
+                            </div>
                         </div>
-                        <div class="reserve-btn-container">
+                        <div class="card border-0">
+                            <div class="car-info">
+                                <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
+                                <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
+                                <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
+                                    supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
+                            </div>
+                            <div class="reserve-btn-container">
+                            </div>
                         </div>
-                    </div>
-                    <div class="card border-0">
-                        <div class="car-info">
-                            <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
-                            <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
-                            <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
-                                supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
-                        </div>
-                        <div class="reserve-btn-container">
-                        </div>
-                    </div>
-                    <div class="card border-0">
-                        <div class="car-info">
-                            <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
-                            <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
-                            <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
-                                supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
-                        </div>
-                        <div class="reserve-btn-container">
+                        <div class="card border-0">
+                            <div class="car-info">
+                                <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
+                                <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
+                                <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
+                                    supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
+                            </div>
+                            <div class="reserve-btn-container">
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- <div class="explore-button">
+                    <button class="explore">EXPLORE OUR FLEET</button>
+                </div> -->
+
             </div>
+            </div>
+            
+
+
+
         </div>
+
     </section>
 
     <section class="about-us">

@@ -136,9 +136,14 @@ body {
     font-size: 1.6rem;
     border-radius: 8px;
     border: none;
+    text-decoration: none;
     background: transparent;
     color: rgba(30, 128, 34, 1);
     border: 1px solid rgba(30, 128, 34, 1);
+}
+
+.link-attributes {
+    text-decoration: none;
 }
 
 .second-row-pictures {
@@ -487,4 +492,27 @@ img.logo.resize-logo {
     height: 2rem;
     width: 2.4rem;
     object-fit: fill;
+}
+
+.carousel.explore-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 6.9rem;
+    gap: 1.2rem;
+}
+
+.carousel-explore {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.explore-button {
+    display: flex;
+    gap: 1.2rem;
+    width: 90%;
+    max-width: 150.0rem;
 }
