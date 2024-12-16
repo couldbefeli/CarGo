@@ -27,7 +27,7 @@ session_start();
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="img/cargo-logo-assets/CarGo-Large.png" alt=""></a>
+            <a class="navbar-brand" href="index.php"><img src="img/cargo-logo-assets/CarGo-Large.png" alt=""></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -77,8 +77,9 @@ session_start();
                         from luxury to economy, tailored to suit every road and every traveler.</p>
                 </div>
                 <div class="second-row-button">
-                    <button class="book-now"><a href="user-vehicles.php">BOOK NOW</a></button>
-                </div>
+    <button class="btn btn-success text-white bt-lg py-3 px-5 fs-3" onclick="window.location.href='user-vehicles.php';">BOOK NOW</button>
+</div>
+
             </div>
             <div class="second-row-pictures">
                 <img class="first-picture" src="img/place-holder-img-1.jpeg" alt="introduction of a car">
@@ -120,8 +121,8 @@ session_start();
                     <div class="carousel">
                         <div class="card border-0">
                             <div class="car-info">
-                                <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
-                                <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
+                                <img src="img/cars/mitsu.png" alt="a photo and description of a car">
+                                <h3 class="car-name">Mitsubishi AUQ-X</h3>
                                 <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
                                     supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
                             </div>
@@ -130,8 +131,8 @@ session_start();
                         </div>
                         <div class="card border-0">
                             <div class="car-info">
-                                <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
-                                <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
+                                <img src="img/cars/toyota.jpg" alt="a photo and description of a car">
+                                <h3 class="car-name">TOYOTA CGLG v2</h3>
                                 <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
                                     supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
                             </div>
@@ -140,8 +141,8 @@ session_start();
                         </div>
                         <div class="card border-0">
                             <div class="car-info">
-                                <img src="img/car-featured/featured-placeholder.png" alt="a photo and description of a car">
-                                <h3 class="car-name">Chevrolet Corvette Z06 2018</h3>
+                                <img src="img/cars/image-from-rawpixel-id-6535323-png.png" alt="a photo and description of a car">
+                                <h3 class="car-name">HONDA star-1-2-1</h3>
                                 <p class="car-description">The 2018 Chevrolet Corvette Z06 delivers thrilling power with a
                                     supercharged V8 engine and bold, iconic design—perfect for an unforgettable drive.</p>
                             </div>
